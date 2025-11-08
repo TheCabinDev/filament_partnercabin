@@ -26,6 +26,8 @@ class PartnersCode extends Model
     ];
 
     protected $casts = [
+        'id_partner' => 'integer',
+        'id_creator' => 'integer',
         'fee_percentage' => 'decimal:2',
         'amount_reduction' => 'decimal:2',
         'claim_quota' => 'integer',
@@ -42,6 +44,11 @@ class PartnersCode extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_creator');
+    }
+
+    public function claimRecords(): HasMany
+    {
+        return $this->hasMany(ClaimCodeRecord::class, 'id_code');
     }
 
     public function scopeActive($query)

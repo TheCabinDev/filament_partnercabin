@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 
 class Partners extends Model
@@ -28,6 +29,7 @@ class Partners extends Model
 
     protected $casts = [
         'creator_id' => 'integer',
+        'password' => 'hashed',
     ];
 
     public function setPasswordAttribute($value): void
@@ -42,6 +44,16 @@ class Partners extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    public function codes(): HasMany
+    {
+        return $this->hasMany(PartnersCode::class, 'id_partner');
+    }
+
+    public function claims(): HasMany
+    {
+        return $this->hasMany(ClaimCodeRecord::class, 'id_partner');
     }
 
     public function scopeActive($query)
@@ -63,4 +75,6 @@ class Partners extends Model
     {
         return $this->status === 'INACTIVE';
     }
+
+
 }
