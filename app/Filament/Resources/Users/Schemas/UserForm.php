@@ -1,10 +1,12 @@
 <?php
+// filepath: c:\Users\ThinkPad X280\BE-Partnership\app\Filament\Resources\Users\Schemas\UserForm.php
 
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class UserForm
 {
@@ -13,15 +15,40 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->required(),
+                    ->label('Name')
+                    ->required()
+                    ->maxLength(255)
+                    ->placeholder('Enter user name'),
+
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Email Address')
                     ->email()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255)
+                    ->placeholder('user@example.com'),
+
+                DateTimePicker::make('email_verified_at')
+                    ->label('Email Verified At')
+                    ->default(now())
+                    // ->disabled()
+                    // ->dehydrated()
+                    ->seconds(false)
+                    ->native(false)
+                    ->helperText('Auto-set to current date/time'),
+
                 TextInput::make('password')
+                    ->label('Password')
                     ->password()
-                    ->required(),
-            ]);
+                    ->required(fn (string $context): bool => $context === 'create')
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->minLength(8)
+                    ->maxLength(255)
+                    ->placeholder('Minimum 8 characters')
+                    ->revealable()
+                    ->helperText('Leave empty to keep current password when editing'),
+            ])
+            ->columns(2);
     }
 }
