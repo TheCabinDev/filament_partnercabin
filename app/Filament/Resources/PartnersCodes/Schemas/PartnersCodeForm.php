@@ -25,7 +25,7 @@ class PartnersCodeForm
 
                 Select::make('id_creator')
                     ->label('Creator')
-                    ->relationship('creator', 'name')
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->default(fn () => auth()->id())

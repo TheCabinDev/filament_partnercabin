@@ -8,4 +8,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePartnersCode extends CreateRecord
 {
     protected static string $resource = PartnersCodeResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // dd($data);
+        return $data;
+    }
 }

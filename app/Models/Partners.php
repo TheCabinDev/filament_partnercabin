@@ -41,14 +41,14 @@ class Partners extends Model
         }
     }
 
-    public function creator(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function codes(): HasMany
+    public function partnerCodes(): HasMany
     {
-        return $this->hasMany(PartnersCode::class, 'id_partner');
+        return $this->hasMany(PartnersCode::class);
     }
 
     public function claims(): HasMany

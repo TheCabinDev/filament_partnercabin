@@ -57,7 +57,7 @@ class PartnersForm
 
                 Select::make('creator_id')
                     ->label('Created By')
-                    ->relationship('creator', 'name')
+                    ->relationship('user', 'name')
                     ->default(fn () => auth()->id())
                     ->required()
                     ->disabled()

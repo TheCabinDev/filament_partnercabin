@@ -112,7 +112,7 @@ class PartnersCodesTable
 
                 SelectFilter::make('id_creator')
                     ->label('Creator')
-                    ->relationship('creator', 'name')
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload(),
 

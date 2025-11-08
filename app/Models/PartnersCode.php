@@ -33,17 +33,17 @@ class PartnersCode extends Model
         'claim_quota' => 'integer',
         'max_claim_per_account' => 'integer',
         'use_started_at' => 'datetime',
-        'use_expired_at' => 'datetime',
+        'use_expired_at' => 'datetime', 
     ];
 
     public function partner(): BelongsTo
     {
-        return $this->belongsTo(Partners::class, 'id_partner');
+        return $this->belongsTo(Partners::class);
     }
 
-    public function creator(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id_creator');
+        return $this->belongsTo(User::class, 'id');
     }
 
     public function claimRecords(): HasMany
@@ -59,6 +59,6 @@ class PartnersCode extends Model
     public function scopeValid($query)
     {
         return $query->where('use_started_at', '<=', now())
-                    ->where('use_expired_at', '>=', now());
+            ->where('use_expired_at', '>=', now());
     }
 }
