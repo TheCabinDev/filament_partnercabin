@@ -30,8 +30,8 @@ class PartnersCodesTable
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('creator.name')
-                    ->label('Creator')
+                TextColumn::make('user.name')
+                    ->label('Created By')
                     ->sortable()
                     ->searchable(),
 
