@@ -1,4 +1,5 @@
 <?php
+// filepath: c:\Users\ThinkPad X280\BE-Partnership\app\Filament\Resources\Partners\Schemas\PartnersForm.php
 
 namespace App\Filament\Resources\Partners\Schemas;
 
@@ -14,19 +15,34 @@ class PartnersForm
     {
         return $schema
             ->components([
-                FileUpload::make('attachment')
-                ->disk('public')
-                ->directory('form-attachments')
-                ->visibility('public'),
+
 
                 TextInput::make('name')
-                    ->label('Partner Name')
+                    ->label('Name')
                     ->required()
                     ->maxLength(255)
-                    ->placeholder('Enter partner name'),
+                    ->placeholder('e.g., John Doe')
+                    ->columnSpanFull(),
+
+                    FileUpload::make('image_profile')
+                    ->label('Profile Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('partners/profiles')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '1:1',
+                        '4:3',
+                        '16:9',
+                    ])
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->nullable()
+                    ->columnSpanFull(),
 
                 TextInput::make('email')
-                    ->label('Email Address')
+                    ->label('Email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
@@ -36,14 +52,21 @@ class PartnersForm
                 TextInput::make('password')
                     ->label('Password')
                     ->password()
-                    ->required(fn (string $context): bool => $context === 'create')
+                    ->revealable()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->dehydrated(fn ($state) => filled($state))
-                    ->minLength(8)
+                    ->required(fn (string $context): bool => $context === 'create')
                     ->maxLength(255)
-                    ->placeholder('Minimum 8 characters')
-                    ->revealable()
                     ->helperText('Leave empty to keep current password when editing'),
+
+                Select::make('creator_id')
+                    ->label('Creator')
+                    ->relationship('creator', 'name')
+                    ->default(auth()->id())
+                    ->required()
+                    ->searchable()
+                    ->preload()
+                    ->native(false),
 
                 Select::make('status')
                     ->label('Status')
@@ -54,15 +77,7 @@ class PartnersForm
                     ->default('ACTIVE')
                     ->required()
                     ->native(false),
-
-                Select::make('creator_id')
-                    ->label('Created By')
-                    ->relationship('user', 'name')
-                    ->default(fn () => auth()->id())
-                    ->required()
-                    ->disabled()
-                    ->dehydrated()
-                    ->visibleOn('create'),
-            ]);
+            ])
+            ->columns(2);
     }
 }
