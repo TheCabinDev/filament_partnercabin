@@ -1,4 +1,5 @@
 <?php
+// filepath: c:\Users\ThinkPad X280\BE-Partnership\app\Filament\Resources\Partners\Tables\PartnersTable.php
 
 namespace App\Filament\Resources\Partners\Tables;
 
@@ -25,9 +26,11 @@ class PartnersTable
 
                 ImageColumn::make('image_profile')
                     ->label('Profile')
+                    ->disk('public')
+                    ->visibility('public')
                     ->circular()
-                    ->defaultImageUrl(url('/images/default-avatar.png'))
-                    ->size(40),
+                    ->size(50)
+                    ->defaultImageUrl(url('/images/default-avatar.png')),
 
                 TextColumn::make('name')
                     ->label('Name')
@@ -40,7 +43,8 @@ class PartnersTable
                     ->label('Email')
                     ->searchable()
                     ->copyable()
-                    ->icon('heroicon-o-envelope'),
+                    ->icon('heroicon-o-envelope')
+                    ->toggleable(),
 
                 BadgeColumn::make('status')
                     ->label('Status')
@@ -53,7 +57,6 @@ class PartnersTable
                 TextColumn::make('creator.name')
                     ->label('Created By')
                     ->sortable()
-                    ->searchable()
                     ->toggleable(),
 
                 TextColumn::make('created_at')
@@ -81,13 +84,12 @@ class PartnersTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-            BulkActionGroup::make([
-                DeleteBulkAction::make(),
-            ]),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
             ->paginated([10, 25, 50, 100]);
     }
 }
-
