@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+
 
 class PartnersCode extends Model
 {
@@ -33,20 +36,21 @@ class PartnersCode extends Model
         'claim_quota' => 'integer',
         'max_claim_per_account' => 'integer',
         'use_started_at' => 'datetime',
-        'use_expired_at' => 'datetime', 
+        'use_expired_at' => 'datetime',
     ];
 
     public function partner(): BelongsTo
     {
-        return $this->belongsTo(Partners::class);
+        return $this->belongsTo(Partners::class, 'id_partner');
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'id_creator');
     }
 
     public function claimRecords(): HasMany
+
     {
         return $this->hasMany(ClaimCodeRecord::class, 'id_code');
     }
