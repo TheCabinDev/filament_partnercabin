@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class Partners extends Model
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $table = 'partners';
 
@@ -39,6 +41,11 @@ class Partners extends Model
                 ? Hash::make($value)
                 : $value;
         }
+    }
+
+    public function creator(): BelongsTo
+    {
+    return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function user(): BelongsTo
