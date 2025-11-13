@@ -55,7 +55,7 @@ class Partners extends Model
 
     public function partnerCodes(): HasMany
     {
-        return $this->hasMany(PartnersCode::class);
+        return $this->hasMany(PartnersCode::class, 'id_partner');
     }
 
     public function claims(): HasMany
