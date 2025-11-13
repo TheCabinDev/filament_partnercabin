@@ -14,6 +14,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use App\Filament\Resources\Partners\RelationManagers\PartnerCodesRelationManager;
 
 class PartnersResource extends Resource
 {
@@ -47,7 +48,7 @@ class PartnersResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PartnerCodesRelationManager::class,
         ];
     }
 
