@@ -18,7 +18,8 @@ class UserForm
                     ->label('Name')
                     ->required()
                     ->maxLength(255)
-                    ->placeholder('Enter user name'),
+                    ->placeholder('Enter user name')
+                    ->helperText('Masukkan nama admin yang akan dibuat'),
 
                 TextInput::make('email')
                     ->label('Email Address')
@@ -31,11 +32,11 @@ class UserForm
                 DateTimePicker::make('email_verified_at')
                     ->label('Email Verified At')
                     ->default(now())
-                    // ->disabled()
+                    ->disabled()
                     // ->dehydrated()
                     ->seconds(false)
                     ->native(false)
-                    ->helperText('Auto-set to current date/time'),
+                    ->helperText('auto verified'),
 
                 TextInput::make('password')
                     ->label('Password')
@@ -47,7 +48,7 @@ class UserForm
                     ->maxLength(255)
                     ->placeholder('Minimum 8 characters')
                     ->revealable()
-                    ->helperText('Leave empty to keep current password when editing'),
+                    ->helperText('password admin yang akan dibuat'),
             ])
             ->columns(2);
     }

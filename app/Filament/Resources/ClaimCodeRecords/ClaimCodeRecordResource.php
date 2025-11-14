@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ClaimCodeRecordResource extends Resource
 {
@@ -22,7 +23,13 @@ class ClaimCodeRecordResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'claim_id';
+    
+    protected static ?string $pluralModelLabel = 'Transaksi Penggunaan Kode Unik';
+
+    protected static ?string $recordTitleAttribute = 'Transaksi Penggunaan Kode Unik';
+
+    protected static ?string $navigationLabel = 'Transaksi Penggunaan Kode Unik';
+    protected static string | UnitEnum | null $navigationGroup = 'Transaksi Reservasi';
 
     public static function form(Schema $schema): Schema
     {

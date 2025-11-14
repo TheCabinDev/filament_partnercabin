@@ -15,16 +15,15 @@ class PartnersForm
     {
         return $schema
             ->components([
-
-
                 TextInput::make('name')
                     ->label('Name')
                     ->required()
                     ->maxLength(255)
                     ->placeholder('e.g., John Doe')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->helperText('Nama Partner/mitra'),
 
-                    FileUpload::make('image_profile')
+                FileUpload::make('image_profile')
                     ->label('Profile Image')
                     ->image()
                     ->disk('public')
@@ -39,7 +38,8 @@ class PartnersForm
                     ->maxSize(2048)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->nullable()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->helperText('Foto partner/mitra '),
 
                 TextInput::make('email')
                     ->label('Email')
@@ -47,17 +47,18 @@ class PartnersForm
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
-                    ->placeholder('partner@example.com'),
+                    ->placeholder('partner@example.com')
+                    ->helperText('Email yang digunakkan partner untuk login ke aplikasi partnership (partnership.thecabinhotelgroup.com) '),
 
                 TextInput::make('password')
                     ->label('Password')
                     ->password()
                     ->revealable()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (string $context): bool => $context === 'create')
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create')
                     ->maxLength(255)
-                    ->helperText('Leave empty to keep current password when editing'),
+                    ->helperText('Password default untuk login partner'),
 
                 Select::make('creator_id')
                     ->label('Creator')
@@ -74,7 +75,7 @@ class PartnersForm
                         'ACTIVE' => 'Active',
                         'INACTIVE' => 'Inactive',
                     ])
-                    ->default('ACTIVE')
+                    ->default('INACTIVE')
                     ->required()
                     ->native(false),
             ])

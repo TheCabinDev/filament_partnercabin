@@ -15,7 +15,7 @@ class PartnersCodeForm
         return $schema
             ->components([
                 Select::make('id_partner')
-                    ->label('Partner')
+                    ->label('Nama Partner/mitra')
                     ->relationship('partner', 'name')
                     ->searchable()
                     ->preload()
@@ -40,13 +40,14 @@ class PartnersCodeForm
                     ->required()
                     ->maxLength(50)
                     ->unique(ignoreRecord: true)
-                    ->default(fn () => strtoupper(Str::random(50)))
+                    ->default(fn () => strtoupper(Str::random(10)))
                     // ->helperText('Auto-generated unique code')
                     // ->placeholder('AUTO-GENERATED')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->helperText('Kode unik untuk klaim reservasi'),
 
                 TextInput::make('fee_percentage')
-                    ->label('Fee Percentage (%)')
+                    ->label('Fee (%)')
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(100)
@@ -54,7 +55,7 @@ class PartnersCodeForm
                     ->suffix('%')
                     ->nullable()
                     ->placeholder('e.g., 10.5')
-                    ->helperText('Set either fee percentage OR amount reduction'),
+                    ->helperText('keuntungan yang diperoleh partner jika kode ini sukses digunakan untuk reservasi'),
 
                 TextInput::make('amount_reduction')
                     ->label('Amount Reduction')
@@ -64,14 +65,14 @@ class PartnersCodeForm
                     ->prefix('Rp')
                     ->nullable()
                     ->placeholder('e.g., 50000')
-                    ->helperText('Set either fee percentage OR amount reduction'),
+                    ->helperText('nominal reduksi setiap kali kode ini digunakan'),
 
                 TextInput::make('claim_quota')
                     ->label('Total Claim Quota')
                     ->numeric()
                     ->minValue(1)
                     ->nullable()
-                    ->helperText('Leave empty for unlimited')
+                    ->helperText('kuota kode ini dapat diklaim menjadi reservasi sukses')
                     ->placeholder('e.g., 100'),
 
                 TextInput::make('max_claim_per_account')
@@ -79,7 +80,7 @@ class PartnersCodeForm
                     ->numeric()
                     ->minValue(1)
                     ->nullable()
-                    ->helperText('Leave empty for unlimited')
+                    ->helperText('kuota maksimal 1 email user dapat melakukan klaim dengan kode ini')
                     ->placeholder('e.g., 1'),
 
                 DateTimePicker::make('use_started_at')
@@ -87,14 +88,16 @@ class PartnersCodeForm
                     ->nullable()
                     ->default(now())
                     ->seconds(false)
-                    ->native(false),
+                    ->native(false)
+                    ->helperText('tanggal kode dapat digunakan/diklaim'),
 
                 DateTimePicker::make('use_expired_at')
                     ->label('Expiry Date')
                     ->nullable()
                     ->after('use_started_at')
                     ->seconds(false)
-                    ->native(false),
+                    ->native(false)
+                    ->helperText('tanggal kode tidak dapat digunakan/diklaim (expired)'),
 
                 Select::make('status')
                     ->label('Status')
@@ -102,7 +105,7 @@ class PartnersCodeForm
                         'ACTIVE' => 'Active',
                         'INACTIVE' => 'Inactive',
                     ])
-                    ->default('ACTIVE')
+                    ->default('INACTIVE')
                     ->required()
                     ->native(false),
             ])

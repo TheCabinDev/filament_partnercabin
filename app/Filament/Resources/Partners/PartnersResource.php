@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use App\Filament\Resources\Partners\RelationManagers\PartnerCodesRelationManager;
+use UnitEnum;
 
 class PartnersResource extends Resource
 {
@@ -22,13 +23,14 @@ class PartnersResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Partner/Mitra';
 
-    protected static ?string $navigationLabel = 'Partners';
+    protected static ?string $pluralModelLabel = 'Partner/mitra';
+    
+    protected static ?string $recordTitleAttribute = 'Partner/mitra';
 
-    protected static ?string $modelLabel = 'Partner';
-
-    protected static ?string $pluralModelLabel = 'Partners';
+    protected static ?string $navigationLabel = 'Partner/mitra';
+    protected static string | UnitEnum | null $navigationGroup = 'Partner/mitra';
 
     public static function form(Schema $schema): Schema
     {

@@ -29,7 +29,6 @@ class PartnersTable
                     ->disk('public')
                     ->visibility('public')
                     ->circular()
-                    ->size(50)
                     ->defaultImageUrl(url('/images/default-avatar.png')),
 
                 TextColumn::make('name')
@@ -39,12 +38,12 @@ class PartnersTable
                     ->copyable()
                     ->description(fn ($record) => $record->email),
 
-                TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable()
-                    ->copyable()
-                    ->icon('heroicon-o-envelope')
-                    ->toggleable(),
+                // TextColumn::make('email')
+                //     ->label('Email')
+                //     ->searchable()
+                //     ->copyable()
+                //     ->icon('heroicon-o-envelope')
+                //     ->toggleable(),
 
                 BadgeColumn::make('status')
                     ->label('Status')

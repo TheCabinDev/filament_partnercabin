@@ -10,6 +10,7 @@ use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\Schemas\UserInfolist;
 use App\Filament\Resources\Users\Tables\UsersTable;
 use App\Models\User;
+use UnitEnum;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -18,6 +19,7 @@ use Filament\Tables\Table;
 use App\Filament\Resources\Users\RelationManagers\PartnersRelationManager;
 use App\Filament\Resources\Users\RelationManagers\PartnerCodeRelationManager;
 
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -25,6 +27,12 @@ class UserResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'User';
+
+    protected static ?string $navigationLabel = 'User admin';
+    protected static string | UnitEnum | null $navigationGroup = 'Admin';
+
+    protected static ?string $modelLabel = 'User admin';
+
 
     public static function form(Schema $schema): Schema
     {
@@ -44,8 +52,8 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-           RelationManagers\PartnersRelationManager::class,
-           RelationManagers\PartnerCodeRelationManager::class,
+            RelationManagers\PartnersRelationManager::class,
+            RelationManagers\PartnerCodeRelationManager::class,
         ];
     }
 

@@ -39,7 +39,7 @@ class PartnersCodesTable
                     ->label('Unique Code')
                     ->sortable()
                     ->searchable()
-                    ->copyable()
+                    // ->copyable()
                     ->copyMessage('Code copied!')
                     ->copyMessageDuration(1500),
 

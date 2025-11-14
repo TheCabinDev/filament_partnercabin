@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PartnersCodeResource extends Resource
 {
@@ -22,7 +23,12 @@ class PartnersCodeResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $pluralModelLabel = 'Kode Unik Partner';
+
+    protected static ?string $recordTitleAttribute = 'Partner/mitra';
+
+    protected static ?string $navigationLabel = 'Kode Unik Partner';
+    protected static string | UnitEnum | null $navigationGroup = 'Partner/mitra';
 
     public static function form(Schema $schema): Schema
     {
