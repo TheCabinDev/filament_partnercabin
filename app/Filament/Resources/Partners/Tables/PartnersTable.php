@@ -11,7 +11,11 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class PartnersTable
 {
@@ -36,7 +40,7 @@ class PartnersTable
                     ->searchable()
                     ->sortable()
                     ->copyable()
-                    ->description(fn ($record) => $record->email),
+                    ->description(fn($record) => $record->email),
 
                 // TextColumn::make('email')
                 //     ->label('Email')
@@ -85,6 +89,18 @@ class PartnersTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ExportAction::make()->exports([
+                        // Pass a string
+                        ExcelExport::make()
+                            ->withFilename(date('Y-m-d') . ' - partners')
+                            ->withColumns([
+                                Column::make('name')->heading('partner_name'),
+                                Column::make('email'),
+                                Column::make('status'),
+                                Column::make('created_at'),
+                            ]),
+
+                    ])
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
