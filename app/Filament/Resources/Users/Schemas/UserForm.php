@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
@@ -41,14 +42,16 @@ class UserForm
                 TextInput::make('password')
                     ->label('Password')
                     ->password()
-                    ->required(fn (string $context): bool => $context === 'create')
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create')
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
                     ->minLength(8)
                     ->maxLength(255)
                     ->placeholder('Minimum 8 characters')
                     ->revealable()
                     ->helperText('password admin yang akan dibuat'),
+
+                Select::make('roles')->multiple()->relationship('roles', 'name')
             ])
             ->columns(2);
     }
