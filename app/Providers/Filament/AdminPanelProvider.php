@@ -27,13 +27,22 @@ class AdminPanelProvider extends PanelProvider
         $panelId = 'admin';
         return $panel
             ->default()
+            ->sidebarCollapsibleOnDesktop(true)
             ->id($panelId)
             ->path($panelId)
+            ->brandName('Partnership The Cabin Hotel')
+            ->favicon(asset('logo_favicon.png'))
+            ->brandLogo(asset('logo.png'))
+            ->brandLogoHeight('4rem')
             ->login()
-            ->registration()
-            ->passwordReset()
+            ->font('Roboto')
             ->colors([
                 'primary' => Color::Amber,
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'success' => Color::Green,
+                'warning' => Color::Rose,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -57,7 +66,22 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 2
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 2,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
             ])
             ->authMiddleware([
                 Authenticate::class,
