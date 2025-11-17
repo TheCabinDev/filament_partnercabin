@@ -1,15 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthPartnerController;
 use App\Http\Controllers\Api\PartnersCodeController;
+use App\Http\Controllers\Api\V1\ProfileController as V1ProfileController;
 
-Route::post('/partner/login', [AuthPartnerController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/partner/me', [AuthPartnerController::class, 'me']);
-    Route::post('/partner/logout', [AuthPartnerController::class, 'logout']);
+//no need to login
+Route::group(['middleware' => ['frontend.secret'], 'prefix' => 'v1'], function () {
+    Route::post('/login', [V1ProfileController::class, 'login']);
+    Route::post('/forgot-password', [V1ProfileController::class, 'forgotPassword']);
+    Route::post('/reset-password', [V1ProfileController::class, 'resetPassword']);
 });
+
+Route::group(['middleware' => ['auth:sanctum', 'frontend.secret'], 'prefix' => 'v1'], function () {
+    Route::get('profile', [V1ProfileController::class, 'profile']);
+    Route::post('/logout', [V1ProfileController::class, 'logout']);
+    Route::post('/profile/update', [V1ProfileController::class, 'updateProfile']);
+});
+
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::get('/partner/me', [AuthPartnerController::class, 'me']);
+//     Route::post('/partner/logout', [AuthPartnerController::class, 'logout']);
+// });
 
 
 // Partners Code Routes
