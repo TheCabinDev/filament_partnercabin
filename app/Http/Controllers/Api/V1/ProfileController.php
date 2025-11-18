@@ -55,7 +55,7 @@ class ProfileController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Logout successful.',
-        ], 204);
+        ], 200);
     }
 
     public function profile(Request $request)
