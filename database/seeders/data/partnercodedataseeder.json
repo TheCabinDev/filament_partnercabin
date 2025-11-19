@@ -1,0 +1,50 @@
+[
+    {
+        "id_partner": "1",
+        "id_creator": "1",
+        "unique_code": "RAFFIMENGINAP",
+        "fee_percentage": "3",
+        "amount_reduction": "10000",
+        "claim_quota": "100",
+        "max_claim_per_account": "1",
+        "use_started_at": "2025-11-19 08:00:00",
+        "use_expired_at": "2025-11-19 08:00:00",
+        "status": "ACTIVE"
+    },
+    {
+        "id_partner": "1",
+        "id_creator": "1",
+        "unique_code": "RAFFISTAYCATION",
+        "fee_percentage": "3",
+        "amount_reduction": "8000",
+        "claim_quota": "90",
+        "max_claim_per_account": "1",
+        "use_started_at": "2025-11-19 08:00:00",
+        "use_expired_at": "2025-11-19 08:00:00",
+        "status": "ACTIVE"
+    },
+    {
+        "id_partner": "2",
+        "id_creator": "1",
+        "unique_code": "MOTORHEMAT",
+        "fee_percentage": "3",
+        "amount_reduction": "10000",
+        "claim_quota": "80",
+        "max_claim_per_account": "1",
+        "use_started_at": "2025-11-19 08:00:00",
+        "use_expired_at": "2025-11-19 08:00:00",
+        "status": "ACTIVE"
+    },
+    {
+        "id_partner": "2",
+        "id_creator": "1",
+        "unique_code": "REVOFIT",
+        "fee_percentage": "3",
+        "amount_reduction": "8000",
+        "claim_quota": "70",
+        "max_claim_per_account": "1",
+        "use_started_at": "2025-11-19 08:00:00",
+        "use_expired_at": "2025-11-19 08:00:00",
+        "status": "ACTIVE"
+    }
+]

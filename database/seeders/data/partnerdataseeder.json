@@ -1,0 +1,18 @@
+[
+    {
+        "creator_id": "1",
+        "name": "RAFFI AHMAD",
+        "email": "test1@gmail.com",
+        "password": "123456",
+        "image_profile": "",
+        "status": "ACTIVE"
+    },
+    {
+        "creator_id": "1",
+        "name": "Sewa Motor Jogja",
+        "email": "test2@gmail.com",
+        "password": "123456",
+        "image_profile": "",
+        "status": "ACTIVE"
+    }
+]
