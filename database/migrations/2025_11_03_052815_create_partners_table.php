@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email', 255)->unique();
             $table->string('password');
             $table->string('image_profile', 255)->nullable();
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('INACTIVE');
             $table->timestamps();
         });
     }

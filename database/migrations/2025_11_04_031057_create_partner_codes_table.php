@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('max_claim_per_account')->nullable();
             $table->dateTime('use_started_at')->nullable();
             $table->dateTime('use_expired_at')->nullable();
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('INACTIVE');
             $table->timestamps();
 
             // Foreign key constraints
