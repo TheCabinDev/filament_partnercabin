@@ -12,7 +12,7 @@ class ClaimCodeRecordForm
     {
         return $schema
             ->components([
-                TextInput::make('claim_id')
+                TextInput::make('id')
                     ->label('Claim ID')
                     ->disabled()
                     ->dehydrated()

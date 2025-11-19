@@ -11,7 +11,7 @@ class ClaimCodeRecordInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('claim_id'),
+                TextEntry::make('id'),
                 TextEntry::make('id_partner')
                     ->numeric(),
                 TextEntry::make('id_code')

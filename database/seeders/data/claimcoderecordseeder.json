@@ -1,0 +1,18 @@
+[
+    {
+        "id_partner": "1",
+        "id_code": "2",
+        "reservation_id": "RESV-SUT-001",
+        "reservation_total_price": "200000",
+        "total_coin_earned": "2000",
+        "reservation_status": "SUCCESS"
+    },
+     {
+        "id_partner": "1",
+        "id_code": "1",
+        "reservation_id": "RESV-SUT-002",
+        "reservation_total_price": "200000",
+        "total_coin_earned": "2000",
+        "reservation_status": "SUCCESS"
+    }
+]

@@ -15,19 +15,18 @@ class ClaimCodeRecordsTable
     {
         return $table
             ->columns([
-                TextColumn::make('claim_id'),
-                TextColumn::make('id_partner')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('id_code')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('partner.name')
+                    ->label('Nama Partner'),
+                TextColumn::make('partnercode.unique_code')
+                    ->label('Kode unik'),
                 TextColumn::make('reservation_id')
                     ->searchable(),
                 TextColumn::make('reservation_total_price')
+                    ->label('Total Harga')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('total_coin_earned')
+                    ->label('Poin didapat')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('reservation_status')

@@ -12,9 +12,11 @@ class ClaimCodeRecord extends Model
     use HasFactory;
 
     protected $table = 'claim_code_records';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
-        'claim_id',
+        'id',
         'id_partner',
         'id_code',
         'reservation_id',
@@ -36,8 +38,8 @@ class ClaimCodeRecord extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (empty($model->claim_id)) {
-                $model->claim_id = (string) Str::uuid();
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
             }
         });
     }
@@ -47,11 +49,11 @@ class ClaimCodeRecord extends Model
         return $this->belongsTo(Partners::class, 'id_partner');
     }
 
-    public function code(): BelongsTo
+    public function partnercode (): BelongsTo
     {
         return $this->belongsTo(PartnersCode::class, 'id_code');
     }
-
+    
     public function scopeSuccess($query)
     {
         return $query->where('reservation_status', 'SUCCESS');

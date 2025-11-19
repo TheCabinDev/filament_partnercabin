@@ -52,7 +52,7 @@ class PartnersCode extends Model
     public function claimRecords(): HasMany
 
     {
-        return $this->hasMany(ClaimCodeRecord::class, 'id_code');
+        return $this->hasMany(ClaimCodeRecord::class, 'id');
     }
 
     public function scopeActive($query)

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClaimCodeRecord;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call([UserSeeder::class]);
         $this->call([PartnerSeeder::class]);
         $this->call([PartnerCodeSeeder::class]);
+        $this->call([ClaimCodRecordSeeder::class]);
     }
 }
