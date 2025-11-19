@@ -62,11 +62,11 @@ class User extends Authenticatable
 
     public function partners(): HasMany
     {
-        return $this->hasMany(Partners::class, 'id');
+        return $this->hasMany(Partners::class, 'creator_id');
     }
 
      public function partnerCodes(): HasMany
     {
-        return $this->hasMany(PartnersCode::class, 'id');
+        return $this->hasMany(PartnersCode::class, 'id_creator');
     }
 }
