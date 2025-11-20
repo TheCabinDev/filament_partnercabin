@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('id_code')->constrained('partners_codes')->onDelete('cascade');
             $table->string('reservation_id', 255);
             $table->decimal('reservation_total_price', 10, 2);
-            $table->decimal('total_coin_earned', 10, 2);
+            $table->decimal('total_poin_earned', 10, 2);
             $table->enum('reservation_status', ['EXPIRED', 'SUCCESS'])->default('EXPIRED');
             $table->timestamps();
 

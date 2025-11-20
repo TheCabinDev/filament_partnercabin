@@ -37,7 +37,7 @@ class ClaimCodeRecordForm
                 TextInput::make('reservation_total_price')
                     ->required()
                     ->numeric(),
-                TextInput::make('total_coin_earned')
+                TextInput::make('total_poin_earned')
                     ->required()
                     ->numeric(),
                 Select::make('reservation_status')

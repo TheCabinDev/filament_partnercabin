@@ -21,7 +21,7 @@ class ClaimCodeRecord extends Model
         'id_code',
         'reservation_id',
         'reservation_total_price',
-        'total_coin_earned',
+        'total_poin_earned',
         'reservation_status',
     ];
 
@@ -29,7 +29,7 @@ class ClaimCodeRecord extends Model
         'id_partner' => 'integer',
         'id_code' => 'integer',
         'reservation_total_price' => 'decimal:2',
-        'total_coin_earned' => 'decimal:2',
+        'total_poin_earned' => 'decimal:2',
     ];
 
 

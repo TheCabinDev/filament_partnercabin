@@ -19,7 +19,7 @@ class ClaimCodeRecordInfolist
                 TextEntry::make('reservation_id'),
                 TextEntry::make('reservation_total_price')
                     ->numeric(),
-                TextEntry::make('total_coin_earned')
+                TextEntry::make('total_poin_earned')
                     ->numeric(),
                 TextEntry::make('reservation_status'),
                 TextEntry::make('created_at')

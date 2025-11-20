@@ -25,7 +25,7 @@ class ClaimCodRecordSeeder extends Seeder
                 "id_code" => $value->id_code,
                 "reservation_id" => $value->reservation_id,
                 "reservation_total_price" => $value->reservation_total_price,
-                "total_coin_earned" => $value->total_coin_earned,
+                "total_poin_earned" => $value->total_poin_earned,
                 "reservation_status" => $value->reservation_status,
             ]);
         }

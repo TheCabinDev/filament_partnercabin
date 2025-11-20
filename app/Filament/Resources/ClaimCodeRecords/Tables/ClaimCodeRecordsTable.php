@@ -25,7 +25,7 @@ class ClaimCodeRecordsTable
                     ->label('Total Harga')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('total_coin_earned')
+                TextColumn::make('total_poin_earned')
                     ->label('Poin didapat')
                     ->numeric()
                     ->sortable(),
