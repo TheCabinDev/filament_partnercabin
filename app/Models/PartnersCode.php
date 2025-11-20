@@ -65,4 +65,16 @@ class PartnersCode extends Model
         return $query->where('use_started_at', '<=', now())
             ->where('use_expired_at', '>=', now());
     }
+
+    public function poinactivity(): HasMany
+    {
+        return $this->hasMany(PoinActivity::class, 'id_unique_code');
+    }
+
+    public function poinledger(): HasMany
+    {
+        return $this->hasMany(PoinLedgers::class, 'id_unique_code');
+    }
+    // partner_code has many poin_activity
+    // partner code  has many poin ledger
 }

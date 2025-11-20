@@ -13,7 +13,7 @@ use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Tables\Table;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use pxlrbt\FilamentExcel\Columns\Column;
 
@@ -49,7 +49,8 @@ class PartnersTable
                 //     ->icon('heroicon-o-envelope')
                 //     ->toggleable(),
 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
+                    ->badge()
                     ->label('Status')
                     ->colors([
                         'success' => 'ACTIVE',

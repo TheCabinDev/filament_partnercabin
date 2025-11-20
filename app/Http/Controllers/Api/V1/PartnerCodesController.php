@@ -35,7 +35,7 @@ class PartnerCodesController extends Controller
             ->get([
                 'reservation_id',
                 'reservation_total_price',
-                'total_coin_earned',
+                'total_poin_earned',
                 'reservation_status',
                 'created_at'
             ]);

@@ -12,11 +12,11 @@ class ClaimCodeRecordForm
     {
         return $schema
             ->components([
-                TextInput::make('id')
-                    ->label('Claim ID')
-                    ->disabled()
-                    ->dehydrated()
-                    ->helperText('Auto-generated claim ID'),
+                // TextInput::make('id')
+                //     ->label('Claim ID')
+                //     ->disabled()
+                //     ->dehydrated()
+                //     ->helperText('Auto-generated claim ID'),
                     // ->columnSpanFull(),
                 Select::make('id_partner')
                     ->label('Partner')
@@ -28,7 +28,7 @@ class ClaimCodeRecordForm
                 Select::make('id_code')
                     ->label('Partner Code')
                     ->required()
-                    ->relationship('code', 'unique_code')
+                    ->relationship('partnercode', 'unique_code')
                     ->searchable()
                     ->preload()
                     ->native(false),

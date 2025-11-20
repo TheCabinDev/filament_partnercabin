@@ -45,7 +45,7 @@ class Partners extends Model
 
     public function creator(): BelongsTo
     {
-    return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function user(): BelongsTo
@@ -83,5 +83,16 @@ class Partners extends Model
         return $this->status === 'INACTIVE';
     }
 
+    public function poinactivity(): HasMany
+    {
+        return $this->hasMany(PoinActivity::class, 'id_partner');
+    }
+
+    public function poinledger(): HasMany
+    {
+        return $this->hasMany(PoinLedgers::class, 'id_partner');
+    }
+    // partner has many poin activity
+    // partner has many poin ledger
 
 }

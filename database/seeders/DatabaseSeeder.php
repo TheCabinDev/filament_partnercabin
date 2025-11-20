@@ -26,6 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call([UserSeeder::class]);
         $this->call([PartnerSeeder::class]);
         $this->call([PartnerCodeSeeder::class]);
-        $this->call([ClaimCodRecordSeeder::class]);
+        // $this->call([ClaimCodRecordSeeder::class]);
     }
 }
