@@ -125,37 +125,42 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $partner = $request->user();
+        // 1. Validasi input (misalnya: name, email)
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:partners,email',
+            // ... validasi kolom lain
+        ]);
 
-        // $request->validate([
-        //     // Email must be unique, except for the current partner's email
-        //     'name' => 'nullable|string|max:255',
-        //     'email' => ['nullable', 'email', 'max:255', Rule::unique('partners')->ignore($partner->id)],
-        //     // 'password' field only if they choose to update the password
-        //     'current_password' => ['nullable', 'required_with:password', function ($attribute, $value, $fail) use ($partner) {
-        //         if (!Hash::check($value, $partner->password)) {
-        //             $fail('The current password provided is incorrect.');
-        //         }
-        //     }],
-        //     'password' => 'nullable|min:8|confirmed',
-        // ]);
-
-        // Prepare the data to update, only including fields that were present in the request
-        $data = $request->only('name', 'email');
-
-        // Handle password update separately if it was provided
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->input('password'));
-        }
-
-        // Use fill and save
-        $partner->fill($data)->save();
+        // 2. Ambil dan update data
+        $partner = auth()->user();
+        $partner->update($request->only(['name', 'email']));
 
         return response()->json([
             'success' => true,
-            'message' => 'Profile updated successfully.',
-            // Return the updated partner resource
-            'data' => $partner->only('id', 'name', 'email', 'image_profile', 'status'),
+            'message' => 'Profile updated successfully.'
         ], 200);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // 1. Validasi input: password lama, password baru, dan konfirmasi
+        $request->validate([
+            'current_password' => 'required', // Memerlukan middleware 'password' di Laravel
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        $partner = auth()->user();
+
+        // 2. Verifikasi password lama
+        if (!Hash::check($request->current_password, $partner->password)) {
+            return response()->json(['error' => 'Kata sandi lama salah.'], 403);
+        }
+
+        // 3. Update password baru
+        $partner->password = Hash::make($request->new_password);
+        $partner->save();
+
+        return response()->json(['message' => 'Kata sandi berhasil diubah.'], 200);
     }
 }
