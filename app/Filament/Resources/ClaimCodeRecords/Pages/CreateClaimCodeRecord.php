@@ -22,15 +22,20 @@ class CreateClaimCodeRecord extends CreateRecord
     }
     protected function afterCreate(): void
     {
+        /**
+         * 21112025
+         * USE IT ONLY FOR LOCAL TESTING. 
+         * DONT USE ON PRODUCTION 
+         * */
         $expDateMonth = intval(env('EXPIRED_POIN_IN_MONTH'));
 
         $res = $this->record;
         $claimCodeId = $res->id;
         $resvStatus = $res->reservation_status;
-        
+
         Log::info('1st query ' . json_encode($res));
         $chk = Carbon::parse($res["created_at"])->format('Ymd');
-        
+
         if ($resvStatus === 'SUCCESS') {
             try {
                 DB::beginTransaction();
