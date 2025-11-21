@@ -26,8 +26,8 @@ return new class extends Migration
 
             $table->decimal('initial_amount', 10, 2);
             $table->decimal('remaining_amount', 10, 2);
-            $table->datetime('earn_date')->nullable();
-            $table->datetime('expire_date')->nullable();
+            $table->date('earn_date')->nullable();
+            $table->date('expire_date')->nullable();
             $table->timestamps();
         });
     }
