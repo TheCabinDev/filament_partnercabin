@@ -15,7 +15,7 @@ class PoinLedgers extends Model
         'id_unique_code',
         'id_partner',
         'initial_amount',
-        'remaining_amoun',
+        'remaining_amount',
         'earn_date',
         'expire_date'
     ];
