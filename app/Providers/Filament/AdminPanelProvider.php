@@ -25,12 +25,18 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $panelId = 'admin';
+        
+        $envServerStatus = getenv('APP_ENV');
+        $brandNameEnv = ($envServerStatus === 'production')
+            ? 'Partnership The Cabin Hotel'
+            : 'TESTING Partnership The Cabin Hotel';
+
         return $panel
             ->default()
             ->sidebarCollapsibleOnDesktop(true)
             ->id($panelId)
             ->path($panelId)
-            ->brandName('Partnership The Cabin Hotel')
+            ->brandName($brandNameEnv)
             ->favicon(asset('logo_favicon.png'))
             ->brandLogo(asset('logo.png'))
             ->brandLogoHeight('4rem')
