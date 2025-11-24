@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ClaimCodeRecordsTable
@@ -15,9 +16,12 @@ class ClaimCodeRecordsTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('partner.name')
                     ->label('Nama Partner'),
                 TextColumn::make('partnercode.unique_code')
+                    ->searchable()
                     ->label('Kode unik'),
                 TextColumn::make('reservation_id')
                     ->searchable(),
@@ -41,7 +45,12 @@ class ClaimCodeRecordsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('reservation_status')
+                    ->options([
+                        'SUCCESS' => 'SUCCESS',
+                        'EXPIRED' => 'EXPIRED',
+                    ]),
+
             ])
             ->recordActions([
                 ViewAction::make(),
