@@ -36,7 +36,7 @@ class PartnerCodesRelationManager extends RelationManager
                 ->relationship('user', 'name')
                 ->searchable()
                 ->preload()
-                ->default(auth()->id())
+                // ->default(auth()->id())
                 ->required()
                 ->label('Creator'),
 
@@ -85,7 +85,7 @@ class PartnerCodesRelationManager extends RelationManager
                 ->default('ACTIVE')
                 ->required(),
         ])
-        ->columns(2);
+            ->columns(2);
     }
 
     public function table(Table $table): Table
@@ -122,15 +122,17 @@ class PartnerCodesRelationManager extends RelationManager
                     ->sortable()
                     ->label('Quota'),
 
-                TextColumn::make('claimRecords_count')
-                    ->counts('claimRecords')
-                    ->label('Claims')
-                    ->sortable()
-                    ->badge()
-                    ->color('success')
-                    ->default(0),
+                // disable 24112025
+                // TextColumn::make('claimRecords_count')
+                //     ->counts('claimRecords')
+                //     ->label('Claims')
+                //     ->sortable()
+                //     ->badge()
+                //     ->color('success')
+                //     ->default(0),
 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
+                    ->badge()
                     ->colors([
                         'success' => 'ACTIVE',
                         'danger' => 'INACTIVE',
