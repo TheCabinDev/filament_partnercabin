@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PoinActivityResource extends Resource
 {
@@ -22,7 +23,12 @@ class PoinActivityResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Poin Activity';
+    protected static ?string $pluralModelLabel = 'Aktifitas Poin';
+
+    protected static ?string $recordTitleAttribute = 'Aktifitas Poin';
+
+    protected static ?string $navigationLabel = 'Aktifitas Poin';
+    protected static string | UnitEnum | null $navigationGroup = 'Poin Partner';
 
     public static function form(Schema $schema): Schema
     {

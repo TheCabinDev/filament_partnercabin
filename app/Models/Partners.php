@@ -60,7 +60,12 @@ class Partners extends Model
 
     public function claimcodereward(): HasMany
     {
-        return $this->hasMany(ClaimCodeRecord::class, 'id_partner');
+        return $this->hasMany(ClaimCodeRecord::class, 'id');
+    }
+
+    public function rewardredeption(): HasMany
+    {
+        return $this->hasMany(RewardRedemption::class, 'id_partner');
     }
 
     public function scopeActive($query)
