@@ -23,8 +23,6 @@ return new class extends Migration
             $table->enum('type_reward', ['CASH', 'VOUCHER_STAY', 'MERCHANDISE']);
             $table->decimal('poin_to_redeem', 10, 2);
             $table->decimal('cash_amount', 10, 2)->nullable();
-            $table->string('destination_bank', 100);        // probably move to partners
-            $table->string('account_number', 100);          // probably move to partners
             $table->enum('redemption_status', ['PENDING', 'PROCESSING', 'COMPLETED', 'REJECTED']);
             $table->string('settlement_proof_image', 255)->nullable();
             $table->text('settlement_notes')->nullabe();

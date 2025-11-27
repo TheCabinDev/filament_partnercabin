@@ -55,16 +55,7 @@ class RewardRedemptionForm
                             ->prefix('Rp')
                             ->placeholder('e.g., 50000')
                             ->helperText('jumlah uang yang akan didapatkan'),
-                        Select::make('destination_bank')
-                            ->options([
-                                'BCA' => 'BCA',
-                                'MANDIRI' => 'MANDIRI',
-                            ])
-                            ->native(false),
-
-                        TextInput::make('account_number')
-                            ->label('Nomor rekening')
-                            ->placeholder('e.g., 50000'),
+                        
                         Select::make('redemption_status')
                             ->options([
                                 'PENDING' => 'PENDING',

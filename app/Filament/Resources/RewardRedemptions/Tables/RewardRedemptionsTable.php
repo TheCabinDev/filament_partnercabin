@@ -29,10 +29,9 @@ class RewardRedemptionsTable
                     ->money('IDR')
                     ->default('-'),
 
-                TextColumn::make('destination_bank')
+                 TextColumn::make('partner.destination_bank')
                     ->label('Bank Tujuan'),
-                TextColumn::make('account_number')
-                    ->label('Nomor rekening'),
+                
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

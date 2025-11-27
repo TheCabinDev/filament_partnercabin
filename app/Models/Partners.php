@@ -21,6 +21,8 @@ class Partners extends Model
         'name',
         'email',
         'password',
+        'destination_bank',
+        'account_number',
         'image_profile',
         'status',
     ];

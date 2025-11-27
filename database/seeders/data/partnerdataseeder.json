@@ -4,6 +4,8 @@
         "name": "RAFFI AHMAD",
         "email": "test1@gmail.com",
         "password": "123456",
+        "destination_bank": "MANDIRI",
+        "account_number": "19990000099",
         "image_profile": "",
         "status": "ACTIVE"
     },
@@ -12,6 +14,8 @@
         "name": "Sewa Motor Jogja",
         "email": "test2@gmail.com",
         "password": "123456",
+        "destination_bank": "BCA",
+        "account_number": "201232120213",
         "image_profile": "",
         "status": "ACTIVE"
     }

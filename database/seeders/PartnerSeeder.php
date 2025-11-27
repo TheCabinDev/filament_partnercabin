@@ -23,6 +23,8 @@ class PartnerSeeder extends Seeder
                 "name" => $value->name,
                 "email" => $value->email,
                 "password" => bcrypt($value->password),
+                "destination_bank" => $value->destination_bank, 
+                "account_number" => $value->account_number, 
                 "image_profile" => $value->image_profile,
                 "status" => $value->status,
             ]);

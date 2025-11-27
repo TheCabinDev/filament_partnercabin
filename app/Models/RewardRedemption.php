@@ -14,8 +14,6 @@ class RewardRedemption extends Model
         'type_reward',
         'poin_to_redeem',
         'cash_amount',
-        'destination_bank',
-        'account_number',
         'redeption_status',
         'settlement_proof_image',
         'settlement_notes',

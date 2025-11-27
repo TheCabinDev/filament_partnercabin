@@ -69,6 +69,18 @@ class PartnersForm
                     ->preload()
                     ->native(false),
 
+                //bank account to transfer
+                Select::make('destination_bank')
+                    ->options([
+                        'BCA' => 'BCA',
+                        'MANDIRI' => 'MANDIRI',
+                    ])
+                    ->native(false),
+
+                TextInput::make('account_number')
+                    ->label('Nomor rekening')
+                    ->placeholder('e.g., 50000'),
+
                 Select::make('status')
                     ->label('Status')
                     ->options([
