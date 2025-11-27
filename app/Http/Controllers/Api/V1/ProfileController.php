@@ -16,7 +16,9 @@ class ProfileController extends Controller
             'password' => 'required|string',
         ]);
 
-        $partner = Partners::where('email', $request->email)->first();
+        $partner = Partners::where('email', $request->email)
+            ->where('status', 'ACTIVE')
+            ->first();
 
         if (!$partner || !Hash::check($request->password, $partner->password)) {
             return response()->json([
@@ -155,6 +157,13 @@ class ProfileController extends Controller
         // 2. Verifikasi password lama
         if (!Hash::check($request->current_password, $partner->password)) {
             return response()->json(['error' => 'Kata sandi lama salah.'], 403);
+        }
+
+        if ($partner->status === 'INACTIVE') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun belum aktif. Silahkan hubungi admin',
+            ], 403);
         }
 
         // 3. Update password baru

@@ -17,11 +17,14 @@ return new class extends Migration
             $table->bigInteger('id_partner')->unsigned();
             $table->foreign('id_partner')->references('id')->on('partners')->onDelete('cascade');
 
+            $table->bigInteger('id_unique_code')->unsigned();
+            $table->foreign('id_unique_code')->references('id')->on('partners_codes')->onDelete('cascade');
+
             $table->enum('type_reward', ['CASH', 'VOUCHER_STAY', 'MERCHANDISE']);
             $table->decimal('poin_to_redeem', 10, 2);
-            $table->decimal('cash_amount', 10, 2);
-            $table->string('destination_bank', 100);
-            $table->string('account_number', 100);
+            $table->decimal('cash_amount', 10, 2)->nullable();
+            $table->string('destination_bank', 100);        // probably move to partners
+            $table->string('account_number', 100);          // probably move to partners
             $table->enum('redemption_status', ['PENDING', 'PROCESSING', 'COMPLETED', 'REJECTED']);
             $table->string('settlement_proof_image', 255)->nullable();
             $table->text('settlement_notes')->nullabe();

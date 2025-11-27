@@ -31,7 +31,7 @@ class PoinActivity extends Model
 
     public function partnercode(): BelongsTo
     {
-        return $this->belongsTo(PartnersCode::class, 'id_partner');
+        return $this->belongsTo(PartnersCode::class, 'id_unique_code');
     }
     // poin activity belongs to partner 
 

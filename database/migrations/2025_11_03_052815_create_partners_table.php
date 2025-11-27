@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('name', 255);
             $table->string('email', 255)->unique();
             $table->string('password');
+            // $table->string('destination_bank', 100);        // probably move to partners
+            // $table->string('account_number', 100);          // probably move to partners
             $table->string('image_profile', 255)->nullable();
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('INACTIVE');
             $table->timestamps();

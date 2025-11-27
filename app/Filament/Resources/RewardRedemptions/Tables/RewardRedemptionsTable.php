@@ -15,6 +15,24 @@ class RewardRedemptionsTable
     {
         return $table
             ->columns([
+
+                TextColumn::make('partner.name')
+                    ->label('Partner')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('poin_to_redeem')
+                    ->label('Poin')
+                    ->money('IDR')
+                    ->default('-'),
+                TextColumn::make('cash_amount')
+                    ->label('Uang yang akan diterima partner')
+                    ->money('IDR')
+                    ->default('-'),
+
+                TextColumn::make('destination_bank')
+                    ->label('Bank Tujuan'),
+                TextColumn::make('account_number')
+                    ->label('Nomor rekening'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
