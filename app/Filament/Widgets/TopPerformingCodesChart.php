@@ -18,7 +18,8 @@ class TopPerformingCodesChart extends ChartWidget
 
     protected function getData(): array
     {
-        $topCodes = PartnersCode::withCount('claimRecords')
+        return [];
+        $topCodes = PartnersCode::withCount('claimRecords')     //return error
             ->orderByDesc('claim_records_count')
             ->take(5)
             ->get();

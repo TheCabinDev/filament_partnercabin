@@ -70,6 +70,16 @@ class PoinActivitiesTable
                         'USE' => 'USE',
                         'EXPIRE' => 'EXPIRE',
                     ]),
+                SelectFilter::make('id_partner')
+                    ->label('Partner')
+                    ->relationship('partner', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('id_unique_code')
+                    ->label('Kode Unik')
+                    ->relationship('partnercode', 'unique_code')
+                    ->searchable()
+                    ->preload(),
             ])
             ->recordActions([
                 ViewAction::make(),

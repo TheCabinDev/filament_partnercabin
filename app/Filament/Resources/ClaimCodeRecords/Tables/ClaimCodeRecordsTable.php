@@ -34,7 +34,14 @@ class ClaimCodeRecordsTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('reservation_status')
-                    ->searchable(),
+                    ->badge()
+                    ->label('Status')
+                    ->colors([
+                        'success' => 'SUCCESS',
+                        'danger' => 'EXPIRED',
+                    ])
+                    ->sortable(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -50,6 +57,18 @@ class ClaimCodeRecordsTable
                         'SUCCESS' => 'SUCCESS',
                         'EXPIRED' => 'EXPIRED',
                     ]),
+                SelectFilter::make('id_partner')
+                    ->label('Partner')
+                    ->relationship('partner', 'name')
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('id_unique_code')
+                    ->label('Kode Unik')
+                    ->relationship('partnercode', 'unique_code')
+                    ->searchable()
+                    ->preload(),
+
+
 
             ])
             ->recordActions([
