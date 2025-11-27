@@ -29,9 +29,31 @@ class RewardRedemptionsTable
                     ->money('IDR')
                     ->default('-'),
 
-                 TextColumn::make('partner.destination_bank')
+                TextColumn::make('partner.destination_bank')
                     ->label('Bank Tujuan'),
-                
+
+                TextColumn::make('redemption_status')
+                    ->badge()
+                    ->label('Status Withdraw')
+                    ->colors([
+                        'info' => 'PENDING',
+                        'info' => 'PROCESSING',
+                        'success' => 'COMPLETED',
+                        'danger' => 'REJECTED',
+                    ])
+                    ->sortable(),
+
+                TextColumn::make('request_date')
+                    ->label('Tanggal Penarikan')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
+
+                TextColumn::make('settlement_date')
+                    ->label('Tanggal Settlement')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
+
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

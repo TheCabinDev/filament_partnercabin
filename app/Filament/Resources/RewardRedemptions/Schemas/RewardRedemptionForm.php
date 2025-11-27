@@ -22,13 +22,7 @@ class RewardRedemptionForm
                             ->preload()
                             ->required()
                             ->native(false),
-                        Select::make('id_unique_code')
-                            ->label('Partner Code')
-                            ->required()
-                            ->relationship('partnercode', 'unique_code')
-                            ->searchable()
-                            ->preload()
-                            ->native(false),
+                      
                         Select::make('type_reward')
                             ->options([
                                 'CASH' => 'CASH',

@@ -68,6 +68,8 @@ class ProfileController extends Controller
             'data' => $request->user()->only( // Use 'only' to prevent leaking sensitive data
                 'id',
                 'name',
+                'destination_bank',
+                'account_number',
                 'email',
                 'image_profile',
                 'status'

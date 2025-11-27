@@ -65,7 +65,7 @@ class Partners extends Model
         return $this->hasMany(ClaimCodeRecord::class, 'id');
     }
 
-    public function rewardredeption(): HasMany
+    public function rewardredemption(): HasMany
     {
         return $this->hasMany(RewardRedemption::class, 'id_partner');
     }

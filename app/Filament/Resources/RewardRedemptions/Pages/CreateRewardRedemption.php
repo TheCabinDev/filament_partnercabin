@@ -8,4 +8,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateRewardRedemption extends CreateRecord
 {
     protected static string $resource = RewardRedemptionResource::class;
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // dd($data);
+        return $data;
+    }
+    protected function afterCreate(): void {}
 }

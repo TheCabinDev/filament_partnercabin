@@ -55,11 +55,6 @@ class PartnersCode extends Model
         return $this->hasMany(ClaimCodeRecord::class, 'id');
     }
 
-    public function rewardredemption(): HasMany
-
-    {
-        return $this->hasMany(RewardRedemption::class, 'id');
-    }
 
     public function scopeActive($query)
     {
