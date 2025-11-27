@@ -23,13 +23,13 @@ class RewardRedemptionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $pluralModelLabel = 'Penarikan Poin';
+    protected static ?string $pluralModelLabel = 'Penarikan Dana Partner';
 
-    protected static ?string $recordTitleAttribute = 'Penarikan Poin';
+    protected static ?string $recordTitleAttribute = 'Penarikan Dana Partner';
 
-    protected static ?string $navigationLabel = 'Penarikan Poin';
-    protected static string | UnitEnum | null $navigationGroup = 'Poin Partner';
-    
+    protected static ?string $navigationLabel = 'Penarikan Dana Partner';
+    protected static string | UnitEnum | null $navigationGroup = 'Dana oleh Partner';
+
     public static function form(Schema $schema): Schema
     {
         return RewardRedemptionForm::configure($schema);

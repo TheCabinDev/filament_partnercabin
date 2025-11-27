@@ -28,7 +28,7 @@ class PoinActivityResource extends Resource
     protected static ?string $recordTitleAttribute = 'Aktifitas Poin';
 
     protected static ?string $navigationLabel = 'Aktifitas Poin';
-    protected static string | UnitEnum | null $navigationGroup = 'Poin Partner';
+    protected static string | UnitEnum | null $navigationGroup = 'Dana oleh Partner';
 
     public static function form(Schema $schema): Schema
     {

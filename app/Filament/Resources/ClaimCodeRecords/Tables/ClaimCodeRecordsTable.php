@@ -30,7 +30,7 @@ class ClaimCodeRecordsTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('total_poin_earned')
-                    ->label('Poin didapat')
+                    ->label('Dana didapat')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('reservation_status')
