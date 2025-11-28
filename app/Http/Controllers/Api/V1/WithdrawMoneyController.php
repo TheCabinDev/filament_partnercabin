@@ -25,7 +25,10 @@ class WithdrawMoneyController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $allBalance,
+            'data' => ([
+                'all_money' => intval($allCash),
+                'all_withdrawable_money' => $allBalance
+            ])
         ], 200);
     }
 
@@ -43,7 +46,7 @@ class WithdrawMoneyController extends Controller
 
         $remainingMoneyToWithdraw = RewardRedemption::where('id_partner', $partnerId)
             ->whereIn('redemption_status', ['COMPLETED', 'PENDING', 'PROCESSING'])->sum('cash_amount');
-       
+
         //jika dana yang tersedia dari request tidak sama dengan dana dari database maka gagal tarik
         if (intval($request->remaining_amount) !== intval($remainingMoneyToWithdraw)) {
             return response()->json([
