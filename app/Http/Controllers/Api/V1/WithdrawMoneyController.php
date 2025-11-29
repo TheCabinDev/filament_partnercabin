@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\PoinActivity;
 use App\Models\RewardRedemption;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+use function Illuminate\Log\log;
 
 class WithdrawMoneyController extends Controller
 {
-    public function moneyBalance(Request $request)
+    private function getValidWithdrawableBalance($partnerId)
     {
-        $partnerId = $request->user()->id;
-
         // get all remaining dana/poin from all kode
         $allCash = PoinActivity::where('id_partner', $partnerId)
             ->where('type_activity', 'EARN')->sum('amount');
@@ -21,13 +22,25 @@ class WithdrawMoneyController extends Controller
         $allWithdrawNoRejected = RewardRedemption::where('id_partner', $partnerId)
             ->whereIn('redemption_status', ['COMPLETED', 'PENDING', 'PROCESSING'])->sum('cash_amount');
 
-        $allBalance = intval($allCash) - intval($allWithdrawNoRejected);
+        $res = intval($allCash) - intval($allWithdrawNoRejected);
+
+        return $res;
+    }
+    public function moneyBalance(Request $request)
+    {
+        $partnerId = $request->user()->id;
+
+        // get all remaining dana/poin from all kode
+        $allCash = PoinActivity::where('id_partner', $partnerId)
+            ->where('type_activity', 'EARN')->sum('amount');
+
+        $allWithdrawableBalance = $this->getValidWithdrawableBalance($partnerId);
 
         return response()->json([
             'success' => true,
             'data' => ([
                 'all_money' => intval($allCash),
-                'all_withdrawable_money' => $allBalance
+                'all_withdrawable_money' => $allWithdrawableBalance
             ])
         ], 200);
     }
@@ -39,16 +52,12 @@ class WithdrawMoneyController extends Controller
             'remaining_amount' => 'required|integer',
             'withdraw_amount' => 'required|integer',
         ]);
-        // check remaining dana from history
-        // if remaining dana == then OK 
-        // if withdraw_dana < remaining dana then OK 
-
-
-        $remainingMoneyToWithdraw = RewardRedemption::where('id_partner', $partnerId)
-            ->whereIn('redemption_status', ['COMPLETED', 'PENDING', 'PROCESSING'])->sum('cash_amount');
+        Log::info('API|withdraw|parameter-' . $partnerId . '|' . $request->remaining_amount . "|" . $request->withdraw_amount);
+        $allWithdrawableBalance = $this->getValidWithdrawableBalance($partnerId);
 
         //jika dana yang tersedia dari request tidak sama dengan dana dari database maka gagal tarik
-        if (intval($request->remaining_amount) !== intval($remainingMoneyToWithdraw)) {
+        if (intval($request->remaining_amount) !== intval($allWithdrawableBalance)) {
+            Log::info('API|withdraw|failed1-' . $partnerId . '|' . intval($request->remaining_amount) . "|" . intval($allWithdrawableBalance));
             return response()->json([
                 'success' => false,
                 'message' => 'Penarikan dana gagal, data tidak valid',
@@ -56,7 +65,9 @@ class WithdrawMoneyController extends Controller
         }
 
         //jika dana yang akan ditarik kurang dari dana tersedia
-        if (intval($remainingMoneyToWithdraw) < intval($request->withdraw_amount)) {
+        if (intval($allWithdrawableBalance) < intval($request->withdraw_amount)) {
+            Log::info('API|withdraw|failed2-' . $partnerId . '|' . intval($allWithdrawableBalance) . "|" . intval($request->withdraw_amount));
+
             return response()->json([
                 'success' => false,
                 'message' => 'Penarikan dana gagal, dana tidak cukup untuk ditarik',
@@ -70,6 +81,7 @@ class WithdrawMoneyController extends Controller
             'cash_amount' =>  intval($request->withdraw_amount),
             'redemption_status' => 'PENDING',
         ]);
+        Log::info('API|withdraw|success-' . $partnerId);
 
         return response()->json(
             [
