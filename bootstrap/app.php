@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckFrontendSecret;
+use App\Http\Middleware\CoreReservationSecret;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // --- Register the custom middleware alias here ---
         $middleware->alias([
             'frontend.secret' => CheckFrontendSecret::class,
+            'coreresv.secret' => CoreReservationSecret::class,
         ]);
         // -------------------------------------------------
 

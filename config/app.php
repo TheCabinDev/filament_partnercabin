@@ -124,4 +124,5 @@ return [
     ],
 
     'frontend_secret' => env('AUTH_CODE_FE'),
+    'coreresv_secret' => env('AUTH_CODE_CORERESERVATION'),
 ];
