@@ -20,10 +20,17 @@ class ProfileController extends Controller
             ->where('status', 'ACTIVE')
             ->first();
 
+        if (!$partner) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akun tidak terdaftar',
+            ], 404);
+        }
+
         if (!$partner || !Hash::check($request->password, $partner->password)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Akun belum terdaftar',
+                'message' => 'Password salah',
             ], 401);
         }
 
