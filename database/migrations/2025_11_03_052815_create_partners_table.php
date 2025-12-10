@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('creator_id')->constrained('users')->onDelete('cascade');
             $table->string('name', 255);
+            $table->string('phone', 20)->nullable();
             $table->string('email', 255)->unique();
             $table->string('password');
-            $table->string('destination_bank', 100);       
-            $table->string('account_number', 100);         
+            $table->string('destination_bank', 100);
+            $table->string('account_number', 100);
             $table->string('image_profile', 255)->nullable();
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('INACTIVE');
             $table->timestamps();

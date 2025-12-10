@@ -19,6 +19,7 @@ class Partners extends Model
     protected $fillable = [
         'creator_id',
         'name',
+        'phone',
         'email',
         'password',
         'destination_bank',

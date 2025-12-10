@@ -23,6 +23,14 @@ class PartnersForm
                     ->columnSpanFull()
                     ->helperText('Nama Partner/mitra'),
 
+                TextInput::make('phone')
+                    ->tel()
+                    ->required()
+                    ->maxLength(20)
+                    ->unique(ignoreRecord: true)
+                    ->placeholder('08123456789')
+                    ->label('Phone Number'),
+
                 FileUpload::make('image_profile')
                     ->label('Profile Image')
                     ->image()
