@@ -105,6 +105,16 @@ class ReservationCodeController extends Controller
                 // If any exception occurs during the operations, roll back the transaction
                 DB::rollBack();
             }
+
+            try {
+                $partnerCode->partner->notify(new PartnerNotification(
+                    'Kode Mitra Digunakan',
+                    'Kode mitra "' . $codeDetail->unique_code . '" telah digunakan pada reservasi ID: ' . $reservation_id,
+                    'success'
+                ));
+            } catch (\Exception $e) {
+                Log::error('Notification failed: ' . $e->getMessage());
+            }
             return response()->json([
                 'message' => 'success'
             ], 200);

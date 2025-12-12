@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Partners;
+use App\Notifications\PartnerNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -137,20 +139,58 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        // 1. Validasi input (misalnya: name, email)
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:partners,email',
-            // ... validasi kolom lain
+            'name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
         ]);
 
-        // 2. Ambil dan update data
+        if (!$request->filled('name') && !$request->filled('phone')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Minimal satu field harus diisi.',
+            ], 422);
+        }
+
         $partner = auth()->user();
-        $partner->update($request->only(['name', 'email']));
+
+        // Update hanya field yang dikirim dan tidak null
+        if ($request->filled('name')) {
+            $partner->name = $request->name;
+        }
+
+        if ($request->filled('phone')) {
+            $partner->phone = $request->phone;
+        }
+
+        $partner->save();
+
+         Log::info('Sending notification to partner: ' . $partner->id);
+
+        try {
+            $partner->notify(new PartnerNotification(
+                'Profile Updated',
+                'Your profile has been updated successfully.',
+                null,
+                'success'
+            ));
+
+            Log::info('Notification sent successfully');
+        } catch (\Exception $e) {
+            Log::error('Notification failed: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'Profile updated successfully.'
+            'message' => 'Profile updated successfully.',
+            'data' => [
+                'id' => $partner->id,
+                'name' => $partner->name,
+                'phone' => $partner->phone,
+                'email' => $partner->email,
+                'image_profile' => $partner->image_profile,
+                'status' => $partner->status,
+            ],
         ], 200);
     }
 
@@ -179,6 +219,18 @@ class ProfileController extends Controller
         // 3. Update password baru
         $partner->password = Hash::make($request->new_password);
         $partner->save();
+
+        try {
+            $partner->notify(new PartnerNotification(
+                'Password Changed',
+                'Kata sandi Anda telah berhasil diubah. Jika ini bukan Anda, silakan hubungi dukungan segera.',
+                null,
+                'warning'
+            ));
+        } catch (\Exception $e) {
+            Log::error('Notification failed: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+        }
 
         return response()->json(['message' => 'Kata sandi berhasil diubah.'], 200);
     }

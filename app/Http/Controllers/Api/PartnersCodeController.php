@@ -62,6 +62,16 @@ class PartnersCodeController extends Controller
 
         $code = PartnersCode::create($validator->validated());
 
+        try {
+            auth()->user()->notify(new PartnerNotification(
+                'Kode Mitra Baru Dibuat',
+                'Kode mitra "' . $code->unique_code . '" telah berhasil dibuat.',
+                'info'
+            ));
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim notifikasi kode mitra baru: ' . $e->getMessage());
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Kode mitra berhasil dibuat',

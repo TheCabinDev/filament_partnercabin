@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\PoinActivity;
 use App\Models\RewardRedemption;
+use App\Notifications\PartnerNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
-use function Illuminate\Log\log;
 
 class WithdrawMoneyController extends Controller
 {
@@ -18,7 +17,7 @@ class WithdrawMoneyController extends Controller
         $allCash = PoinActivity::where('id_partner', $partnerId)
             ->where('type_activity', 'EARN')->sum('amount');
 
-        // get all withdraw transaction with status of COMPLETED, PENDING, PROCESSING 
+        // get all withdraw transaction with status of COMPLETED, PENDING, PROCESSING
         $allWithdrawNoRejected = RewardRedemption::where('id_partner', $partnerId)
             ->whereIn('redemption_status', ['COMPLETED', 'PENDING', 'PROCESSING'])->sum('cash_amount');
 
@@ -26,6 +25,7 @@ class WithdrawMoneyController extends Controller
 
         return $res;
     }
+
     public function moneyBalance(Request $request)
     {
         $partnerId = $request->user()->id;
@@ -47,11 +47,14 @@ class WithdrawMoneyController extends Controller
 
     public function withdraw(Request $request)
     {
+        $partner = $request->user();
         $partnerId = $request->user()->id;
+
         $request->validate([
             'remaining_amount' => 'required|integer',
             'withdraw_amount' => 'required|integer',
         ]);
+
         Log::info('API|withdraw|parameter-' . $partnerId . '|' . $request->remaining_amount . "|" . $request->withdraw_amount);
         $allWithdrawableBalance = $this->getValidWithdrawableBalance($partnerId);
 
@@ -81,7 +84,21 @@ class WithdrawMoneyController extends Controller
             'cash_amount' =>  intval($request->withdraw_amount),
             'redemption_status' => 'PENDING',
         ]);
+
         Log::info('API|withdraw|success-' . $partnerId);
+
+        try {
+            $partner->notify(new PartnerNotification(
+                'Withdrawal Request Submitted',
+                'Your withdrawal request of Rp ' . number_format($request->withdraw_amount, 0, ',', '.') . ' is being processed. Please wait for admin approval.',
+                '/withdraw-history',
+                'info'
+            ));
+
+            Log::info('Withdraw notification sent successfully');
+        } catch (\Exception $e) {
+            Log::error('Withdraw notification failed: ' . $e->getMessage());
+        }
 
         return response()->json(
             [
@@ -96,7 +113,6 @@ class WithdrawMoneyController extends Controller
     {
         $partnerId = $request->user()->id;
 
-        // get semua  withdraw baik success, pending dll 
         $allWithdraw = RewardRedemption::where('id_partner', $partnerId)
             ->orderBy('created_at', 'desc')
             ->get();
