@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\V1\ProfileController as V1ProfileController;
 use App\Http\Controllers\Api\V1\PartnerCodesController as V1PartnerCodesController;
 use App\Http\Controllers\Api\V1\WithdrawMoneyController as V1WithdrawMoneyController;
 use App\Http\Controllers\Api\V1\Reservation\ReservationCodeController as V1RESVCodeController;
+use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\PushSubscriptionController;
 
 
 //no need to login
@@ -32,10 +34,29 @@ Route::group(['middleware' => ['auth:sanctum', 'frontend.secret'], 'prefix' => '
 Route::group(['middleware' => ['coreresv.secret'], 'prefix' => 'v1'], function () {
     Route::post('core-reservation/detail', [V1RESVCodeController::class, 'codeDetail']);
     Route::post('core-reservation/usecode', [V1RESVCodeController::class, 'useCodeAfterFinalStatus']);
-   
+
     //post  /usecode
-        // dengan body : total nilai, resv id, 
+        // dengan body : total nilai, resv id,
 });
+
+
+Route::get('/v1/push-subscriptions/vapid-key', [PushSubscriptionController::class, 'getVapidPublicKey']);
+
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    // Push Subscription
+    Route::post('/push-subscriptions', [PushSubscriptionController::class, 'store']);
+    Route::delete('/push-subscriptions', [PushSubscriptionController::class, 'destroy']);
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [NotificationController::class, 'delete']);
+
+    // ...existing code...
+});
+
 
 
 // Route::middleware('auth:sanctum')->group(function () {
