@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\RewardRedemption;
+use App\Observers\RewardRedemptionObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register RewardRedemption Observer
+        RewardRedemption::observe(RewardRedemptionObserver::class);
     }
 }

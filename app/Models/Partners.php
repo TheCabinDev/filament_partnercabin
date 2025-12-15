@@ -3,16 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use NotificationChannels\WebPush\HasPushSubscriptions;
+use Illuminate\Notifications\Notifiable;
 
-
-class Partners extends Model
+class Partners extends Authenticatable
 {
-    use HasApiTokens, HasFactory;
+    use HasApiTokens, Notifiable, HasPushSubscriptions, HasFactory;
 
     protected $table = 'partners';
 
@@ -30,6 +31,8 @@ class Partners extends Model
 
     protected $hidden = [
         'password',
+        'remember_token',
+        'auth_code'
     ];
 
     protected $casts = [
@@ -98,9 +101,7 @@ class Partners extends Model
 
     public function poinledger(): HasMany
     {
-        return $this->hasMany(PoinLedgers::class, 'id_partner');
+        return $this->hasMany(PoinLedger::class, 'id_partner');
     }
-    // partner has many poin activity
-    // partner has many poin ledger
 
 }
