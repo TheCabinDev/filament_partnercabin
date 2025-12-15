@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_creator');
             $table->string('unique_code', 50)->unique();
             $table->decimal('fee_percentage', 10, 2)->nullable();
-            $table->decimal('amount_reduction', 10, 2)->nullable();
-            $table->integer('claim_quota')->nullable();
-            $table->integer('max_claim_per_account')->nullable();
+            $table->decimal('amount_reduction', 10, 2)->nullable();     //change to reduction_percentage
+            $table->integer('claim_quota')->nullable();     //set to 999
+            $table->integer('max_claim_per_account')->nullable();   //set to 999
             $table->dateTime('use_started_at')->nullable();
             $table->dateTime('use_expired_at')->nullable();
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('INACTIVE');
