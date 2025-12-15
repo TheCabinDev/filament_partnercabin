@@ -27,32 +27,33 @@ trait CodeCheck
         if ($codeStatus === 'INACTIVE') {
             return response()->json([
                 'message' => 'code is inactive'
-            ], 404);
+            ], 403);
         }
 
         if ($maxClaimQuota <= 0) {
             return response()->json([
                 'message' => 'max claim code is 0'
-            ], 404);
+            ], 403);
         }
         // dd($useCodeStarted);
         if ($nowdatetime->lessThan($useCodeStarted)) {
             return response()->json([
                 'message' => 'The code cannot be accessed because the time has not started yet.'
-            ], 404);
+            ], 403);
         }
 
         if ($nowdatetime->greaterThan($useCodeExpired)) {
             return response()->json([
                 'message' => 'The code has expired.'
-            ], 404);
+            ], 403);
         }
 
         return response()->json([
             'data' => [
                 'unique_code' => $codeDetail->unique_code,
                 'status' => $codeDetail->status,
-                'amount_reduction' => $codeDetail->amount_reduction
+                'amount_reduction' => $codeDetail->amount_reduction,
+                'amount_fee' => $codeDetail->fee_percentage
             ]
         ], 200);
     }
