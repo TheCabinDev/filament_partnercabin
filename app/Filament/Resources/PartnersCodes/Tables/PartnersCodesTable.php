@@ -49,10 +49,9 @@ class PartnersCodesTable
                     ->formatStateUsing(fn ($state) => $state ? $state . '%' : '-')
                     ->default('-'),
 
-                TextColumn::make('amount_reduction')
-                    ->label('Reduction')
-                    ->sortable()
-                    ->money('IDR')
+                TextColumn::make('reduction_percentage')
+                    ->suffix('%')
+                    ->label('Reduction (%)')
                     ->default('-'),
 
                 TextColumn::make('claim_quota')

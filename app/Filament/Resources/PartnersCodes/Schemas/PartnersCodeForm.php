@@ -44,7 +44,11 @@ class PartnersCodeForm
                     // ->helperText('Auto-generated unique code')
                     // ->placeholder('AUTO-GENERATED')
                     ->columnSpanFull()
-                    ->helperText('Kode unik untuk klaim reservasi'),
+                    ->helperText('Kode unik untuk klaim reservasi')
+                    ->validationMessages([
+                        'unique' => 'Kode ini sudah ada. Silahkan gunakan kode lain.',
+                    ]),
+
 
                 TextInput::make('fee_percentage')
                     ->label('Fee (%)')
@@ -57,15 +61,13 @@ class PartnersCodeForm
                     ->placeholder('e.g., 10.5')
                     ->helperText('keuntungan yang diperoleh partner jika kode ini sukses digunakan untuk reservasi'),
 
-                TextInput::make('amount_reduction')
-                    ->label('Amount Reduction')
+                TextInput::make('reduction_percentage')
+                    ->label('Diskon (%)')
                     ->numeric()
+                    ->suffix('%')
                     ->minValue(0)
-                    ->step(0.01)
-                    ->prefix('Rp')
-                    ->nullable()
-                    ->placeholder('e.g., 50000')
-                    ->helperText('nominal reduksi setiap kali kode ini digunakan'),
+                    ->maxValue(50)
+                    ->helperText('maksimal diskon 50%'),
 
                 TextInput::make('claim_quota')
                     ->label('Total Claim Quota')

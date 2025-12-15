@@ -43,9 +43,13 @@ class PartnersCodeController extends Controller
         $validator = Validator::make($request->all(),[
             'id_partner' => 'required|exists:partners,id',
             'id_creator' => 'required|exists:users,id',
-            'unique_code' => 'required|string|max:50|unique:partners_codes,unique_code',
+            'unique_code' => [
+                'required',
+                'string',
+                'unique:partners_codes,unique_code',
+            ],
             'fee_percentage' => 'nullable|numeric|min:0|max:100',
-            'amount_reduction' => 'nullable|numeric|min:0',
+            'reduction_percentage' => 'nullable|numeric|min:0|max:50',
             'claim_quota' => 'nullable|integer|min:0',
             'max_claim_per_account' => 'nullable|integer|min:0',
             'use_started_at' => 'nullable|date',
@@ -92,8 +96,13 @@ class PartnersCodeController extends Controller
         }
 
         $validator = Validator::make($request->all(),[
+            'unique_code' => [
+                'sometimes',
+                'string',
+                'unique:partners_codes,unique_code,' . $code->id,
+            ],
             'fee_percentage' => 'nullable|numeric|min:0|max:100',
-            'amount_reduction' => 'nullable|numeric|min:0',
+            'reduction_percentage' => 'nullable|numeric|min:0|max:50',
             'claim_quota' => 'nullable|integer|min:0',
             'max_claim_per_account' => 'nullable|integer|min:0',
             'use_started_at' => 'nullable|date',
