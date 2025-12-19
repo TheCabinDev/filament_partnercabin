@@ -52,7 +52,7 @@ trait CodeCheck
             'data' => [
                 'unique_code' => $codeDetail->unique_code,
                 'status' => $codeDetail->status,
-                'amount_reduction' => $codeDetail->amount_reduction,
+                'reduction_percentage' => $codeDetail->reduction_percentage,
                 'amount_fee' => $codeDetail->fee_percentage
             ]
         ], 200);
