@@ -49,7 +49,7 @@ class ReservationCodeController extends Controller
                 DB::beginTransaction();
 
                 //if a reservation is SUCCESS, then write to claimcoderecord, poinactivity and poinledger
-                if ($reservation_status === 'SUCCESS') {
+                if ($reservation_status === 'PAID') {
                     $resStatus = 'SUCCESS';
                     //hitung poin earned
                     $earnedPoinCash = intval(floor($codeDetail->fee_percentage / 100 * $total_price));
