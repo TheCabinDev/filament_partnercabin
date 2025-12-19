@@ -63,7 +63,7 @@ class ReservationCodeController extends Controller
                         'reservation_status' => $resStatus
 
                     ]);
-                    Log::info('1st query ' . json_encode($resClaimCodeCreated));
+                    Log::info('CORERESERVATION|USECODE-1|' . json_encode($resClaimCodeCreated));
                     $resPoinCreated = PoinActivity::create([
                         'reservation_id' => $reservation_id,
                         'id_unique_code' => $codeDetail->id,
@@ -73,7 +73,7 @@ class ReservationCodeController extends Controller
                         'date_transaction' => Carbon::parse($date_transaction)->format('Ymd')
                     ]);
 
-                    Log::info('2nd query ' . json_encode($resPoinCreated));
+                    Log::info('CORERESERVATION|USECODE-2|' . json_encode($resPoinCreated));
                     $resLedgerCreated = PoinLedgers::create([
                         'poin_activity_id' => $resPoinCreated->id,
                         'id_unique_code' => $codeDetail->id,
@@ -83,7 +83,7 @@ class ReservationCodeController extends Controller
                         'earn_date' => Carbon::parse($date_transaction)->format('Ymd'),
                         'expire_date' => Carbon::parse($date_transaction)->addMonth($expDateMonth)->format('Ymd'),
                     ]);
-                    Log::info('3rd query ' . json_encode($resLedgerCreated));
+                    Log::info('CORERESERVATION|USECODE-3|' . json_encode($resLedgerCreated));
                 } else {
 
                     //if a reservation is EXPIRED, then write only for table claimcoderecord
@@ -96,6 +96,7 @@ class ReservationCodeController extends Controller
                         'reservation_status' => 'EXPIRED'
 
                     ]);
+                    Log::info('CORERESERVATION|USECODE-FAILED|' . json_encode($resClaimCodeCreated));
                 }
 
                 DB::commit();
