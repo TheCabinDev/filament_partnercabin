@@ -23,7 +23,7 @@ class PartnerCodeSeeder extends Seeder
                 "id_creator" => $value->id_creator,
                 "unique_code" => $value->unique_code,
                 "fee_percentage" => $value->fee_percentage,
-                "amount_reduction" => $value->amount_reduction,
+                "reduction_percentage" => $value->reduction_percentage,
                 "claim_quota" => $value->claim_quota,
                 "max_claim_per_account" => $value->max_claim_per_account,
                 "use_started_at" => $value->use_started_at,
