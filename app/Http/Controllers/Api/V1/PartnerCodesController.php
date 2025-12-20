@@ -15,6 +15,7 @@ class PartnerCodesController extends Controller
         $partnerId = auth()->user()->id;
 
         $allcode = PartnersCode::where('id_partner', $partnerId)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([
@@ -32,6 +33,7 @@ class PartnerCodesController extends Controller
             ->first();
         // 2. Ambil semua transaksi klaim terkait kode tersebut
         $transactions = ClaimCodeRecord::where('id_code', $code_id)
+            ->orderBy('created_at', 'desc')
             ->get([
                 'reservation_id',
                 'reservation_total_price',
