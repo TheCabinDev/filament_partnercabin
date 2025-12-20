@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationSuccessNotification;
 
 class ReservationCodeController extends Controller
 {
@@ -84,6 +86,22 @@ class ReservationCodeController extends Controller
                         'expire_date' => Carbon::parse($date_transaction)->addMonth($expDateMonth)->format('Ymd'),
                     ]);
                     Log::info('CORERESERVATION|USECODE-3|' . json_encode($resLedgerCreated));
+
+                    try {
+                        Mail::to($codeDetail->partner->email)->send(
+                            new ReservationSuccessNotification(
+                                $codeDetail->partner,
+                                $codeDetail->unique_code,
+                                $reservation_id,
+                                $total_price,
+                                $earnedPoinCash,
+                                $date_transaction
+                            )
+                        );
+                        Log::info('Reservation success email sent to partner: ' . $codeDetail->partner->email);
+                    } catch (\Exception $e) {
+                        Log::error('Notification failed: ' . $e->getMessage());
+                    }
                 } else {
 
                     //if a reservation is EXPIRED, then write only for table claimcoderecord
