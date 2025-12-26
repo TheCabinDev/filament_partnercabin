@@ -52,9 +52,23 @@ return [
 
     'channels' => [
 
+        'info_custom' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/INFO-' . date('dmY') . '.log'),
+            'level' => 'info',
+            'replace_placeholders' => true,
+        ],
+
+        'critical_custom' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/CRITICAL-' . date('dmY') . '.log'),
+            'level' => 'critical',
+            'replace_placeholders' => true,
+        ],
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
+            'channels' => ['info_custom', 'critical_custom', 'daily'],
             'ignore_exceptions' => false,
         ],
 
@@ -89,7 +103,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
