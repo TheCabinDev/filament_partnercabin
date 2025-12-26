@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasRoles, HasFactory, Notifiable;
@@ -65,8 +67,13 @@ class User extends Authenticatable
         return $this->hasMany(Partners::class, 'creator_id');
     }
 
-     public function partnerCodes(): HasMany
+    public function partnerCodes(): HasMany
     {
         return $this->hasMany(PartnersCode::class, 'id_creator');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
     }
 }
