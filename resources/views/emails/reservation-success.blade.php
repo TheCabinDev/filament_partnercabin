@@ -34,14 +34,14 @@
         </div>
 
         <div class="content-padding" style="padding: 40px 30px;">
-            <p style="font-size: 16px; margin-bottom: 10px;">Halo <strong style="color: #4CAF50;">{{ $partner->name }}</strong>,</p>
+            <p style="font-size: 16px; margin-bottom: 10px;">Halo <strong style="color: #4CAF50;">{{ $name }}</strong>,</p>
 
             <p style="font-size: 15px; color: #666; margin-bottom: 30px;">Kode partner Anda telah digunakan untuk reservasi yang berhasil! Berikut adalah detail transaksi:</p>
 
             <div style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); padding: 25px; border-radius: 10px; margin: 25px 0; border: 2px solid #4CAF50;">
                 <div style="margin-bottom: 15px;">
                     <span style="color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Kode Digunakan</span>
-                    <div style="font-size: 24px; font-weight: bold; color: #4CAF50; margin-top: 5px; letter-spacing: 2px;">{{ $partnerCode->unique_code }}</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #4CAF50; margin-top: 5px; letter-spacing: 2px;">{{ $unique_code }}</div>
                 </div>
 
                 <div style="border-top: 1px solid #A5D6A7; margin: 20px 0;"></div>
@@ -49,19 +49,19 @@
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <td style="padding: 8px 0; color: #666; font-size: 14px;">ID Reservasi:</td>
-                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #333; font-size: 14px;">{{ $reservationId }}</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #333; font-size: 14px;">{{ $reservation_id }}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; color: #666; font-size: 14px;">Total Harga:</td>
-                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #333; font-size: 14px;">Rp {{ number_format($totalPrice, 0, ',', '.') }}</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #333; font-size: 14px;">Rp {{ number_format($total_price, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; color: #666; font-size: 14px;">Poin Didapat:</td>
-                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #4CAF50; font-size: 18px;">Rp {{ number_format($earnedPoin, 0, ',', '.') }}</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #4CAF50; font-size: 18px;">Rp {{ number_format($earned_cash, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <td style="padding: 8px 0; color: #666; font-size: 14px;">Tanggal Transaksi:</td>
-                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #333; font-size: 14px;">{{ \Carbon\Carbon::parse($dateTransaction)->format('d M Y H:i') }}</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #333; font-size: 14px;">{{ \Carbon\Carbon::parse($date_transaction)->format('d M Y H:i') }}</td>
                     </tr>
                 </table>
             </div>

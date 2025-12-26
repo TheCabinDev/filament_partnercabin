@@ -8,30 +8,16 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class ReservationSuccessNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $partner;
-    public $partnerCode;
-    public $reservationId;
-    public $totalPrice;
-    public $earnedPoin;
-    public $dateTransaction;
-
     /**
      * Create a new message instance.
      */
-    public function __construct($partner, $partnerCode, $reservationId, $totalPrice, $earnedPoin, $dateTransaction)
-    {
-        $this->partner = $partner;
-        $this->partnerCode = $partnerCode;
-        $this->reservationId = $reservationId;
-        $this->totalPrice = $totalPrice;
-        $this->earnedPoin = $earnedPoin;
-        $this->dateTransaction = $dateTransaction;
-    }
+    public function __construct(private $partner, public $partnerCode, private $reservationId, private $totalPrice, private $earnedPoin, private $dateTransaction) {}
 
     /**
      * Get the message envelope.
@@ -39,7 +25,11 @@ class ReservationSuccessNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reservation Berhasil',
+            subject: match (app()->environment()) {
+                'local'   => 'TEST LOCAL:Reservasi Baru Berhasil',
+                'staging' => 'TEST STAGING:Reservasi Baru Berhasil',
+                default   => 'Reservasi Baru Berhasil',
+            },
         );
     }
 
@@ -50,6 +40,14 @@ class ReservationSuccessNotification extends Mailable
     {
         return new Content(
             view: 'emails.reservation-success',
+            with: [
+                'name' => $this->partner,
+                'unique_code' =>  $this->partnerCode,
+                'reservation_id' =>  $this->reservationId,
+                'total_price' =>  $this->totalPrice,
+                'earned_cash' =>  $this->earnedPoin,
+                'date_transaction' => $this->dateTransaction,
+            ]
         );
     }
 
