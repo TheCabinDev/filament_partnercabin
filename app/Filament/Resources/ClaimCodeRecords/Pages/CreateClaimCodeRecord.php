@@ -8,6 +8,8 @@ use App\Models\PoinLedgers;
 use Carbon\Carbon;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationSuccessNotification;
 use Illuminate\Support\Facades\Log;
 
 use function Illuminate\Log\log;
@@ -24,8 +26,8 @@ class CreateClaimCodeRecord extends CreateRecord
     {
         /**
          * 21112025
-         * USE IT ONLY FOR LOCAL TESTING. 
-         * DONT USE ON PRODUCTION 
+         * USE IT ONLY FOR LOCAL TESTING.
+         * DONT USE ON PRODUCTION
          * */
         $expDateMonth = intval(env('EXPIRED_POIN_IN_MONTH'));
 
@@ -61,6 +63,18 @@ class CreateClaimCodeRecord extends CreateRecord
                 ]);
                 Log::info('3rd query ' . json_encode($resLedgerCreated));
                 DB::commit();
+
+                Mail::to($this->record->partner->email)->send(
+                    new ReservationSuccessNotification(
+                        $this->record->partner,
+                        // $this->record->partnercode->unique_code,
+                        $this->record->partnercode,
+                        $this->record->reservation_id,
+                        $this->record->reservation_total_price,
+                        $this->record->total_poin_earned,
+                        $chk
+                    )
+                );
             } catch (\Throwable $th) {
                 Log::warning('fail query ' . $th);
 
@@ -71,8 +85,8 @@ class CreateClaimCodeRecord extends CreateRecord
 
 
 
-        // if status success : 
-        //     insert to poin activity EARN, poin ledger 
+        // if status success :
+        //     insert to poin activity EARN, poin ledger
 
     }
 
@@ -80,4 +94,7 @@ class CreateClaimCodeRecord extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
+
 }
+
