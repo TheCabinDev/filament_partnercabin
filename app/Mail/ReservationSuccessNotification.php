@@ -41,8 +41,8 @@ class ReservationSuccessNotification extends Mailable
         return new Content(
             view: 'emails.reservation-success',
             with: [
-                'name' => $this->partner,
-                'unique_code' =>  $this->partnerCode,
+                'name' => $this->partner->name,
+                'unique_code' =>  $this->partnerCode->unique_code,
                 'reservation_id' =>  $this->reservationId,
                 'total_price' =>  $this->totalPrice,
                 'earned_cash' =>  $this->earnedPoin,
