@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,9 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PartnersCode extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $table = 'partners_codes';
+
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id_partner',
@@ -29,8 +33,8 @@ class PartnersCode extends Model
     ];
 
     protected $casts = [
-        'id_partner' => 'integer',
-        'id_creator' => 'integer',
+        'id_partner' => 'string',
+        'id_creator' => 'string',
         'fee_percentage' => 'decimal:2',
         'reduction_percentage' => 'decimal:2',
         'claim_quota' => 'integer',

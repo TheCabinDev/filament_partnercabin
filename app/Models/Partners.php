@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,9 +14,12 @@ use Illuminate\Notifications\Notifiable;
 
 class Partners extends Authenticatable
 {
-    use HasApiTokens, Notifiable, HasPushSubscriptions, HasFactory;
+    use HasApiTokens, Notifiable, HasPushSubscriptions, HasFactory, HasUuids;
 
     protected $table = 'partners';
+
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'creator_id',
@@ -36,7 +40,7 @@ class Partners extends Authenticatable
     ];
 
     protected $casts = [
-        'creator_id' => 'integer',
+        'creator_id' => 'string',
         'password' => 'hashed',
     ];
 
@@ -101,7 +105,6 @@ class Partners extends Authenticatable
 
     public function poinledger(): HasMany
     {
-        return $this->hasMany(PoinLedger::class, 'id_partner');
+        return $this->hasMany(PoinLedgers::class, 'id_partner');
     }
-
 }

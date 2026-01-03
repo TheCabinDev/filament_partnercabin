@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Policies;
 
 use Illuminate\Foundation\Auth\User as AuthUser;
-use App\Models\Partners;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PartnersPolicy
@@ -17,7 +14,7 @@ class PartnersPolicy
         return $authUser->can('ViewAny:Partners');
     }
 
-    public function view(AuthUser $authUser, Partners $partners): bool
+    public function view(AuthUser $authUser): bool
     {
         return $authUser->can('View:Partners');
     }
@@ -27,22 +24,22 @@ class PartnersPolicy
         return $authUser->can('Create:Partners');
     }
 
-    public function update(AuthUser $authUser, Partners $partners): bool
+    public function update(AuthUser $authUser): bool
     {
         return $authUser->can('Update:Partners');
     }
 
-    public function delete(AuthUser $authUser, Partners $partners): bool
+    public function delete(AuthUser $authUser): bool
     {
         return $authUser->can('Delete:Partners');
     }
 
-    public function restore(AuthUser $authUser, Partners $partners): bool
+    public function restore(AuthUser $authUser): bool
     {
         return $authUser->can('Restore:Partners');
     }
 
-    public function forceDelete(AuthUser $authUser, Partners $partners): bool
+    public function forceDelete(AuthUser $authUser): bool
     {
         return $authUser->can('ForceDelete:Partners');
     }
@@ -57,7 +54,7 @@ class PartnersPolicy
         return $authUser->can('RestoreAny:Partners');
     }
 
-    public function replicate(AuthUser $authUser, Partners $partners): bool
+    public function replicate(AuthUser $authUser): bool
     {
         return $authUser->can('Replicate:Partners');
     }

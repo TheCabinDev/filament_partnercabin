@@ -27,8 +27,8 @@ class ClaimCodeRecord extends Model
 
     protected $casts = [
         'id' => 'string',
-        'id_partner' => 'integer',
-        'id_code' => 'integer',
+        'id_partner' => 'string',
+        'id_code' => 'string',
         'reservation_total_price' => 'decimal:2',
         'total_poin_earned' => 'decimal:2',
     ];
