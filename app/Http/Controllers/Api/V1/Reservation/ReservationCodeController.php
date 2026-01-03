@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationSuccessNotification;
+use App\Jobs\SendReservationSuccessEmail;
+
 
 class ReservationCodeController extends Controller
 {
@@ -43,10 +45,8 @@ class ReservationCodeController extends Controller
         $res = $this->isCodeValid($codeToCheck);
 
         if ($res->getStatusCode() === 200) {
-
             $codeDetail = PartnersCode::where('unique_code', $codeToCheck)
                 ->first();
-
             try {
                 DB::beginTransaction();
 
@@ -61,10 +61,10 @@ class ReservationCodeController extends Controller
                         'reservation_total_price' => $total_price,
                         'id_code' => $codeDetail->id,
                         'id_partner' => $codeDetail->id_partner,
-                        'total_poin_earned' => $earnedPoinCash, //hitung,
+                        'total_poin_earned' => $earnedPoinCash,
                         'reservation_status' => $resStatus
-
                     ]);
+
                     Log::info('CORERESERVATION|USECODE-1|' . json_encode($resClaimCodeCreated));
                     $resPoinCreated = PoinActivity::create([
                         'reservation_id' => $reservation_id,
@@ -88,17 +88,35 @@ class ReservationCodeController extends Controller
                     Log::info('CORERESERVATION|USECODE-3|' . json_encode($resLedgerCreated));
 
                     try {
-                        Mail::to($codeDetail->partner->email)->send(
-                            new ReservationSuccessNotification(
-                                $codeDetail->partner,
-                                $codeDetail->unique_code,
-                                $reservation_id,
-                                $total_price,
-                                $earnedPoinCash,
-                                $date_transaction
-                            )
+
+                        /**
+                         * Pengiriman email langsung dinonaktifkan
+                         * Diganti dengan Queue Job agar proses email berjalan async
+                         *
+                         * Di edit oleh: Muhammad Bill Fedro Saputra
+                         * Tanggal: 02-01-2026
+                         */
+
+                        // Mail::to($codeDetail->partner->email)->send(
+                        //     new ReservationSuccessNotification(
+                        //         $codeDetail->partner,
+                        //         $codeDetail,
+                        //         $reservation_id,
+                        //         $total_price,
+                        //         $earnedPoinCash,
+                        //         $date_transaction
+                        //     )
+
+                        SendReservationSuccessEmail::dispatch(
+                            $codeDetail->partner,
+                            $codeDetail,
+                            $reservation_id,
+                            $total_price,
+                            $earnedPoinCash,
+                            $date_transaction
                         );
-                        Log::info('Reservation success email sent to partner: ' . $codeDetail->partner->email);
+                        // Log::info('Reservation success email sent to partner: ' . $codeDetail->partner->email);
+                        Log::info('Reservation success email queued for partner: ' . $codeDetail->partner->email);
                     } catch (\Exception $e) {
                         Log::error('Notification failed: ' . $e->getMessage());
                     }
@@ -125,15 +143,23 @@ class ReservationCodeController extends Controller
                 DB::rollBack();
             }
 
-            try {
-                $partnerCode->partner->notify(new PartnerNotification(
-                    'Kode Mitra Digunakan',
-                    'Kode mitra "' . $codeDetail->unique_code . '" telah digunakan pada reservasi ID: ' . $reservation_id,
-                    'success'
-                ));
-            } catch (\Exception $e) {
-                Log::error('Notification failed: ' . $e->getMessage());
-            }
+            /**
+             * Pengiriman notifikasi ke partner dinonaktifkan
+             * Sudah tidak perlu karena notifikasi email sudah ada
+             * Notifikasi akan di kirim melalui Queue Job
+             * Di edit oleh: Muhammad Bill Fedro Saputra
+             * Tanggal: 02-01-2026
+             */
+
+            // try {
+            //     $partnerCode->partner->notify(new PartnerNotification(
+            //         'Kode Mitra Digunakan',
+            //         'Kode mitra "' . $codeDetail->unique_code . '" telah digunakan pada reservasi ID: ' . $reservation_id,
+            //         'success'
+            //     ));
+            // } catch (\Exception $e) {
+            //     Log::error('Notification failed: ' . $e->getMessage());
+            // }
             return response()->json([
                 'message' => 'success'
             ], 200);
