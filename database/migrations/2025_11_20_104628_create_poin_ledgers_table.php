@@ -14,15 +14,13 @@ return new class extends Migration
         Schema::create('poin_ledgers', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('poin_activity_id')->unsigned();
-            $table->foreign('poin_activity_id')->references('id')->on('poin_activities')->onDelete('cascade');
+            $table->foreignId('poin_activity_id')->constrained('poin_activities')->onDelete('cascade');
 
-            $table->bigInteger('id_unique_code')->unsigned();
-            $table->foreign('id_unique_code')->references('id')->on('partners_codes')->onDelete('cascade');
+            $table->foreignUuid('id_unique_code')->constrained('partners_codes')->onDelete('cascade');
 
-
-            $table->bigInteger('id_partner')->unsigned();
-            $table->foreign('id_partner')->references('id')->on('partners')->onDelete('cascade');
+            $table->foreignUuid('id_partner')
+                ->constrained('partners')
+                ->onDelete('cascade');
 
             $table->decimal('initial_amount', 10, 2);
             $table->decimal('remaining_amount', 10, 2);

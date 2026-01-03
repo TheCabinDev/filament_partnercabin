@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('reward_redemptions', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('id_partner')->unsigned();
-            $table->foreign('id_partner')->references('id')->on('partners')->onDelete('cascade');
+            
+            $table->foreignUuid('id_partner')
+                ->constrained('partners')
+                ->onDelete('cascade');
 
             $table->enum('type_reward', ['CASH', 'VOUCHER_STAY', 'MERCHANDISE']);
             $table->decimal('poin_to_redeem', 10, 2);

@@ -16,11 +16,9 @@ return new class extends Migration
 
             $table->string('reservation_id', 255);
             
-            $table->bigInteger('id_unique_code')->unsigned();
-            $table->foreign('id_unique_code')->references('id')->on('partners_codes')->onDelete('cascade');
+            $table->foreignUuid('id_unique_code')->references('id')->on('partners_codes')->onDelete('cascade');
 
-            $table->bigInteger('id_partner')->unsigned();
-            $table->foreign('id_partner')->references('id')->on('partners')->onDelete('cascade');
+            $table->foreignUuid('id_partner')->constrained('partners')->onDelete('cascade');
 
             $table->enum('type_activity', ['EARN', 'USE', 'EXPIRE']);
             $table->decimal('amount', 10, 2);

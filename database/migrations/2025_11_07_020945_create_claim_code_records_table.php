@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('claim_code_records', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('id_partner')->constrained('partners')->onDelete('cascade');
-            $table->foreignId('id_code')->constrained('partners_codes')->onDelete('cascade');
+            $table->foreignUuid('id_partner')->constrained('partners')->onDelete('cascade');
+            $table->foreignUuid('id_code')->constrained('partners_codes')->onDelete('cascade');
             $table->string('reservation_id', 255);
             $table->decimal('reservation_total_price', 10, 2);
             $table->decimal('total_poin_earned', 10, 2)->nullable();
