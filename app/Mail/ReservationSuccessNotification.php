@@ -17,7 +17,24 @@ class ReservationSuccessNotification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private $partner, public $partnerCode, private $reservationId, private $totalPrice, private $earnedPoin, private $dateTransaction) {}
+
+    /**
+     * Semua parameter constructor diubah menjadi private
+     * Untuk meningkatkan enkapsulasi dan mencegah akses langsung dari luar class
+     *
+     * Di edit oleh: Muhammad Bill Fedro Saputra
+     * Tanggal: 02-01-2026
+     */
+
+    // public function __construct(private $partner, public $partnerCode, private $reservationId, private $totalPrice, private $earnedPoin, private $dateTransaction) {}
+    public function __construct(
+        private $partner,
+        private $partnerCode,
+        private $reservationId,
+        private $totalPrice,
+        private $earnedPoin,
+        private $dateTransaction
+    ) {}
 
     /**
      * Get the message envelope.
