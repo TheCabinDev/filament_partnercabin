@@ -35,19 +35,46 @@ class PartnersCodeForm
                     ->native(false)
                     ->columnSpanFull(),
 
+                // TextInput::make('unique_code')
+                //     ->label('Unique Code')
+                //     ->required()
+                //     ->maxLength(50)
+                //     ->unique(ignoreRecord: true)
+                //     ->default(fn () => strtoupper(Str::random(10)))
+                //     // ->helperText('Auto-generated unique code')
+                //     // ->placeholder('AUTO-GENERATED')
+                //     ->columnSpanFull()
+                //     ->helperText('Kode unik untuk klaim reservasi')
+                //     ->validationMessages([
+                //         'unique' => 'Kode ini sudah ada. Silahkan gunakan kode lain.',
+                //     ]),
+
                 TextInput::make('unique_code')
                     ->label('Unique Code')
                     ->required()
                     ->maxLength(50)
                     ->unique(ignoreRecord: true)
-                    ->default(fn () => strtoupper(Str::random(10)))
-                    // ->helperText('Auto-generated unique code')
-                    // ->placeholder('AUTO-GENERATED')
+
+                    ->regex('/^[A-Z0-9]+$/')
+
+                    ->extraInputAttributes([
+                        'style' => 'text-transform: uppercase',
+                    ])
+
                     ->columnSpanFull()
-                    ->helperText('Kode unik untuk klaim reservasi')
+
                     ->validationMessages([
-                        'unique' => 'Kode ini sudah ada. Silahkan gunakan kode lain.',
-                    ]),
+                        'required' => 'Kode unik wajib diisi.',
+                        'unique' => 'Kode ini sudah ada. Silakan gunakan kode lain.',
+                        'regex' => 'Kode hanya boleh berisi huruf kapital (A–Z) dan angka (0–9).',
+                        'max' => 'Kode maksimal 50 karakter.',
+                    ])
+
+                    // BACKEND: paksa kapital sebelum disimpan
+                    ->dehydrateStateUsing(fn ($state) => strtoupper($state))
+
+                    // FORM: tampilkan selalu kapital
+                    ->formatStateUsing(fn ($state) => strtoupper($state)),
 
 
                 TextInput::make('fee_percentage')
