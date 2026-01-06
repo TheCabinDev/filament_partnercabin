@@ -33,7 +33,13 @@ class PartnersCodeForm
                     ->disabled()
                     ->dehydrated()
                     ->native(false)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->rules([
+                        'required',
+                            Rule::exists('users', 'id')->where(fn ($query) =>
+                                $query->where('is_active', true)
+                            ),
+                        ]),
 
                 // TextInput::make('unique_code')
                 //     ->label('Unique Code')
