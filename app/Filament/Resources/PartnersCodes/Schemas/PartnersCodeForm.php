@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PartnersCodeForm
 {
