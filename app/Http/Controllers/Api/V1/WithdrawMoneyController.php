@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\PoinActivity;
 use App\Models\RewardRedemption;
 use App\Notifications\PartnerNotification;
+use App\Jobs\SendRewardRedemptionEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+
 
 class WithdrawMoneyController extends Controller
 {
@@ -53,7 +55,11 @@ class WithdrawMoneyController extends Controller
         $request->validate([
             'remaining_amount' => 'required|integer',
             'withdraw_amount' => 'required|integer',
+            // 'account_number' => 'nullable|string',
         ]);
+
+        // Log::info('Account number from request: ' . ($request->account_number ?? 'NULL'));
+        // Log::info('Partner bank account: ' . ($partner->bank_account ?? 'NULL'));
 
         Log::info('API|withdraw|parameter-' . $partnerId . '|' . $request->remaining_amount . "|" . $request->withdraw_amount);
         $allWithdrawableBalance = $this->getValidWithdrawableBalance($partnerId);
@@ -77,13 +83,20 @@ class WithdrawMoneyController extends Controller
             ], 403);
         }
 
-        RewardRedemption::create([
+        $accountNumber = $request->account_number
+            ?? $partner->bank_account
+            ?? 'Belum diisi';
+
+        $redemption = RewardRedemption::create([
             'id_partner' => $partnerId,
             'type_reward' => 'CASH',            //cash only for now
             'poin_to_redeem' =>  intval($request->withdraw_amount),
             'cash_amount' =>  intval($request->withdraw_amount),
             'redemption_status' => 'PENDING',
+            // 'account_number' => $accountNumber,
         ]);
+
+        // Log::info('Saved account number: ' . $redemption->account_number);
 
         Log::info('API|withdraw|success-' . $partnerId);
 
@@ -98,6 +111,13 @@ class WithdrawMoneyController extends Controller
             Log::info('Withdraw notification sent successfully');
         } catch (\Exception $e) {
             Log::error('Withdraw notification failed: ' . $e->getMessage());
+        }
+
+        try {
+            SendRewardRedemptionEmail::dispatch($redemption);
+            Log::info('Withdraw email queued for partner: ' . $partner->email);
+        } catch (\Exception $e) {
+            Log::error('Withdraw email failed: ' . $e->getMessage());
         }
 
         return response()->json(
