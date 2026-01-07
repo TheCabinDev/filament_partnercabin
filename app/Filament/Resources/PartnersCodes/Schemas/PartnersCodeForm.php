@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Builder;
 
 class PartnersCodeForm
 {
@@ -17,7 +18,13 @@ class PartnersCodeForm
             ->components([
                 Select::make('id_partner')
                     ->label('Nama Partner/mitra')
-                    ->relationship('partner', 'name')
+                    ->relationship(
+                        name: 'partner',
+                        titleAttribute: 'name',
+                        // Tambahkan callback di bawah ini untuk memfilter status
+                        // modifyQueryUsing: fn(Builder $query) => $query->where('status', 'ACTIVE')
+                        modifyQueryUsing: fn(Builder $query) => $query->where('status', 'ACTIVE')
+                    )
                     ->searchable()
                     ->preload()
                     ->required()
@@ -29,18 +36,12 @@ class PartnersCodeForm
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
-                    ->default(fn () => auth()->id())
+                    ->default(fn() => auth()->id())
                     ->required()
                     ->disabled()
                     ->dehydrated()
                     ->native(false)
-                    ->columnSpanFull()
-                    ->rules([
-                        'required',
-                            Rule::exists('users', 'id')->where(fn ($query) =>
-                                $query->where('is_active', true)
-                            ),
-                        ]),
+                    ->columnSpanFull(),
 
                 // TextInput::make('unique_code')
                 //     ->label('Unique Code')
@@ -60,9 +61,10 @@ class PartnersCodeForm
                     ->label('Unique Code')
                     ->required()
                     ->maxLength(50)
+                    ->minLength(3)
                     ->unique(ignoreRecord: true)
 
-                    ->regex('/^[A-Z0-9]+$/')
+                    ->regex('/^[A-Z0-9]+$/i')
 
                     ->extraInputAttributes([
                         'style' => 'text-transform: uppercase',
@@ -72,36 +74,37 @@ class PartnersCodeForm
 
                     ->validationMessages([
                         'required' => 'Kode unik wajib diisi.',
-                        'unique' => 'Kode ini sudah ada. Silakan gunakan kode lain.',
+                        'unique' => 'Kode ini sudah ada. Silakan gunakan kode lain.',   //not working
                         'regex' => 'Kode hanya boleh berisi huruf kapital (A–Z) dan angka (0–9).',
                         'max' => 'Kode maksimal 50 karakter.',
+                        'min' => 'Kode minimal 3 karakter.',
                     ])
 
                     // BACKEND: paksa kapital sebelum disimpan
-                    ->dehydrateStateUsing(fn ($state) => strtoupper($state))
+                    ->dehydrateStateUsing(fn($state) => strtoupper($state))
 
                     // FORM: tampilkan selalu kapital
-                    ->formatStateUsing(fn ($state) => strtoupper($state)),
+                    ->formatStateUsing(fn($state) => strtoupper($state)),
 
 
                 TextInput::make('fee_percentage')
                     ->label('Fee (%)')
                     ->numeric()
                     ->minValue(0)
-                    ->maxValue(100)
+                    ->maxValue(20)
                     ->step(0.01)
                     ->suffix('%')
                     ->nullable()
                     ->placeholder('e.g., 10.5')
-                    ->helperText('keuntungan yang diperoleh partner jika kode ini sukses digunakan untuk reservasi'),
+                    ->helperText('keuntungan yang diperoleh partner jika kode ini sukses digunakan untuk reservasi. maksimal 20%'),
 
                 TextInput::make('reduction_percentage')
                     ->label('Diskon (%)')
                     ->numeric()
                     ->suffix('%')
                     ->minValue(0)
-                    ->maxValue(50)
-                    ->helperText('maksimal diskon 50%'),
+                    ->maxValue(20)
+                    ->helperText('maksimal diskon 20%'),
 
                 TextInput::make('claim_quota')
                     ->label('Total Claim Quota')
