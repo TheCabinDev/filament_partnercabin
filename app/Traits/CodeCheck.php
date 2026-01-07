@@ -64,4 +64,12 @@ trait CodeCheck
             ]
         ], 200);
     }
+
+    public function isCodeUnique($codeToCheck)
+    {
+        $codeDetail = PartnersCode::where('unique_code', $codeToCheck)
+            ->first();
+        return $codeDetail;
+
+    }
 }
