@@ -54,7 +54,7 @@ trait CodeCheck
             ], 403);
         }
 
-        Log::info('CORERESERVATION|CHECKCODE-403|valid|' . $codeToCheck . "|" . $codeDetail->reduction_percentage . "|" . $codeDetail->fee_percentage);
+        Log::info('CORERESERVATION|CHECKCODE-200|valid|' . $codeToCheck . "|" . $codeDetail->reduction_percentage . "|" . $codeDetail->fee_percentage);
         return response()->json([
             'data' => [
                 'unique_code' => $codeDetail->unique_code,
