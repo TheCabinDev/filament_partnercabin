@@ -25,11 +25,25 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         $panelId = 'admin';
-        
-        $envServerStatus = getenv('APP_ENV');
-        $brandNameEnv = ($envServerStatus === 'production')
-            ? 'Partnership The Cabin Hotel'
-            : 'TESTING Partnership The Cabin Hotel';
+
+        // $envServerStatus = getenv('APP_ENV');
+        // $brandNameEnv = ($envServerStatus === 'production')
+        //     ? 'Partnership The Cabin Hotel'
+        //     : 'TESTING Partnership The Cabin Hotel';
+
+        $brandNameEnv = match (app()->environment()) {
+            'local' => 'TEST LOCAL: Partnership The Cabin Hotel',
+            'staging' => 'TEST STAGING: Partnership The Cabin Hotel',
+            'production' => 'Partnership The Cabin Hotel',
+            default => 'Partnership The Cabin Hotel',
+        };
+
+        $primaryColor = match (app()->environment()) {
+            'local' => Color::Purple,
+            'staging' => Color::Yellow,
+            'production' => Color::Amber,
+            default => Color::Amber,
+        };
 
         return $panel
             ->default()
@@ -43,7 +57,8 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->font('Roboto')
             ->colors([
-                'primary' => Color::Amber,
+                // 'primary' => Color::Amber,
+                'primary' => $primaryColor,
                 'danger' => Color::Rose,
                 'gray' => Color::Gray,
                 'info' => Color::Blue,
