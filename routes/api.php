@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\WithdrawMoneyController as V1WithdrawMoneyContro
 use App\Http\Controllers\Api\V1\Reservation\ReservationCodeController as V1RESVCodeController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\PushSubscriptionController;
+use App\Http\Controllers\PartnerCodeController;
 
 
 //no need to login
@@ -25,6 +26,7 @@ Route::group(['middleware' => ['auth:sanctum', 'frontend.secret'], 'prefix' => '
 
     Route::get('codes', [V1PartnerCodesController::class, 'allCode']);
     Route::get('codes/{code_id}/transactions', [V1PartnerCodesController::class, 'codeTransaction']);
+	Route::patch('codes/{code_id}/fees', [V1PartnerCodesController::class, 'updateFees']);
 
     Route::get('money-balance', [V1WithdrawMoneyController::class, 'moneyBalance']);
     Route::post('/withdraw', [V1WithdrawMoneyController::class, 'withdraw']);
@@ -35,8 +37,6 @@ Route::group(['middleware' => ['coreresv.secret'], 'prefix' => 'v1'], function (
     Route::post('core-reservation/detail', [V1RESVCodeController::class, 'codeDetail']);
     Route::post('core-reservation/usecode', [V1RESVCodeController::class, 'useCodeAfterFinalStatus']);
 
-    //post  /usecode
-        // dengan body : total nilai, resv id,
 });
 
 
@@ -53,8 +53,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
     Route::delete('/notifications/{id}', [NotificationController::class, 'delete']);
-
-    // ...existing code...
 });
 
 
