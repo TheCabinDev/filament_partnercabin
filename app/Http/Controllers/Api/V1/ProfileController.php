@@ -23,13 +23,16 @@ class ProfileController extends Controller
             ->first();
 
         if (!$partner) {
+            Log::info('ProfileController|404', ['email' => $request->email]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Akun tidak terdaftar',
             ], 404);
         }
 
-        if (!$partner || !Hash::check($request->password, $partner->password)) {
+        if (!Hash::check($request->password, $partner->password)) {
+            Log::info('ProfileController|401', ['email' => $request->email]);
             return response()->json([
                 'success' => false,
                 'message' => 'Password salah',
@@ -37,6 +40,7 @@ class ProfileController extends Controller
         }
 
         if ($partner->status === 'INACTIVE') {
+            Log::info('ProfileController|403', ['email' => $request->email]);
             return response()->json([
                 'success' => false,
                 'message' => 'Akun belum aktif. Silahkan hubungi admin',
@@ -44,6 +48,7 @@ class ProfileController extends Controller
         }
 
         $token = $partner->createToken('partner_token')->plainTextToken;
+        Log::info('ProfileController|200', ['email' => $request->email]);
 
         return response()->json([
             'success' => true,
@@ -164,7 +169,7 @@ class ProfileController extends Controller
 
         $partner->save();
 
-         Log::info('Sending notification to partner: ' . $partner->id);
+        Log::info('Sending notification to partner: ' . $partner->id);
 
         try {
             $partner->notify(new PartnerNotification(
