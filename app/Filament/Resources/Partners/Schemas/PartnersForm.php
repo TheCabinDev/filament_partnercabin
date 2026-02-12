@@ -81,7 +81,10 @@ class PartnersForm
                 Select::make('destination_bank')
                     ->options([
                         'BCA' => 'BCA',
+                        'BNI' => 'BNI',
+                        'BRI' => 'BRI',
                         'MANDIRI' => 'MANDIRI',
+                        'BPD DIY' => 'BPD DIY',
                     ])
                     ->native(false),
 
