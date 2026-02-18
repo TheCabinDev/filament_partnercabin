@@ -34,7 +34,6 @@ class PartnersCodeForm
                 Select::make('id_creator')
                     ->label('Creator')
                     ->relationship('user', 'name')
-                    ->searchable()
                     ->preload()
                     ->default(fn() => auth()->id())
                     ->required()
@@ -59,6 +58,7 @@ class PartnersCodeForm
 
                 TextInput::make('unique_code')
                     ->label('Unique Code')
+                    ->searchable()
                     ->required()
                     ->maxLength(50)
                     ->minLength(3)
