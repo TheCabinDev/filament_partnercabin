@@ -86,10 +86,12 @@ class PartnersForm
                         'MANDIRI' => 'MANDIRI',
                         'BPD DIY' => 'BPD DIY',
                     ])
+                    ->required()
                     ->native(false),
 
                 TextInput::make('account_number')
                     ->label('Nomor rekening')
+                    ->required()
                     ->placeholder('e.g., 50000'),
 
                 Select::make('status')

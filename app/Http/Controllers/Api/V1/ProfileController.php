@@ -18,6 +18,9 @@ class ProfileController extends Controller
             'password' => 'required|string',
         ]);
 
+        //set email to lowercase to prevent case sensitivity issues
+        $request->merge(['email' => strtolower($request->email)]);
+
         $partner = Partners::where('email', $request->email)
             ->where('status', 'ACTIVE')
             ->first();
