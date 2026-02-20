@@ -19,7 +19,7 @@ class QrCodeService
         $fullUrl = $baseUrl . '/?ref=' . $uniqueCode;
 
         // Pastikan file logo tersedia di path ini
-        $logoPath = public_path('logo.png');
+        $logoPath = public_path('logocabin.png');
         $options = new QROptions([
             'version'      => 7, // Versi tinggi agar area data lebih luas
             'outputType'   => QRCode::OUTPUT_IMAGE_PNG,
@@ -45,7 +45,7 @@ class QrCodeService
         $centerX    = $qrWidth / 2;
         $centerY    = $qrHeight / 2;
 
-        $bgColor = imagecolorallocate($qrImage, 250, 155, 117);
+        $bgColor = imagecolorallocate($qrImage, 255, 255, 255);
 
         // Menggambar lingkaran putih solid
         imagefilledellipse($qrImage, $centerX, $centerY, $circleSize, $circleSize, $bgColor);
