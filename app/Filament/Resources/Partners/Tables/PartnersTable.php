@@ -26,6 +26,7 @@ class PartnersTable
                 TextColumn::make('id')
                     ->label('ID')
                     ->sortable()
+                    ->limit(10)
                     ->searchable(),
 
                 ImageColumn::make('image_profile')

@@ -30,6 +30,8 @@ class PartnersCode extends Model
         'use_started_at',
         'use_expired_at',
         'status',
+        'qrcode_image'
+        ,
     ];
 
     protected $casts = [
@@ -41,6 +43,7 @@ class PartnersCode extends Model
         'max_claim_per_account' => 'integer',
         'use_started_at' => 'datetime',
         'use_expired_at' => 'datetime',
+        'qrcode_image' => 'string',
     ];
 
     public function partner(): BelongsTo

@@ -15,6 +15,7 @@ class CreatePartners extends CreateRecord
         //set email to lowercase to prevent case sensitivity issues
         $data['email'] = strtolower($data['email']);
         
+        dd($data);
         return $data;
     }
 

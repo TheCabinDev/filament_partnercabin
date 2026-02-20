@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\PartnersCodes\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class PartnersCodeForm
 {
@@ -58,7 +60,6 @@ class PartnersCodeForm
 
                 TextInput::make('unique_code')
                     ->label('Unique Code')
-                    ->searchable()
                     ->required()
                     ->maxLength(50)
                     ->minLength(3)
@@ -69,14 +70,21 @@ class PartnersCodeForm
                     ->extraInputAttributes([
                         'style' => 'text-transform: uppercase',
                     ])
-
+                    ->helperText(new HtmlString('
+                        <ul class="list-disc ml-4 space-y-1 text-sm text-gray-500">
+                            <li>- Kode unik wajib diisi.</li>
+                            <li>- Kode hanya boleh berisi huruf kapital (A–Z) dan angka (0–9).</li>
+                            <li>- Kode maksimal dan minimal 3 karakter dan maksimal 15 karakter </li>
+                            <li>- Setelah dibuat, kode tidak dapat diubah.</li>
+                        </ul>
+                    '))
                     ->columnSpanFull()
-
+                    ->disabled(fn(string $context): bool => $context === 'edit')
                     ->validationMessages([
                         'required' => 'Kode unik wajib diisi.',
                         'unique' => 'Kode ini sudah ada. Silakan gunakan kode lain.',   //not working
                         'regex' => 'Kode hanya boleh berisi huruf kapital (A–Z) dan angka (0–9).',
-                        'max' => 'Kode maksimal 50 karakter.',
+                        'max' => 'Kode maksimal 15 karakter.',
                         'min' => 'Kode minimal 3 karakter.',
                     ])
 
@@ -110,6 +118,7 @@ class PartnersCodeForm
                     ->label('Total Claim Quota')
                     ->numeric()
                     ->minValue(1)
+                    ->default(9999)
                     ->nullable()
                     ->helperText('kuota kode ini dapat diklaim menjadi reservasi sukses')
                     ->placeholder('e.g., 100'),
@@ -118,6 +127,7 @@ class PartnersCodeForm
                     ->label('Max Claim Per Account')
                     ->numeric()
                     ->minValue(1)
+                    ->default(9999)
                     ->nullable()
                     ->helperText('kuota maksimal 1 email user dapat melakukan klaim dengan kode ini')
                     ->placeholder('e.g., 1'),
@@ -134,6 +144,7 @@ class PartnersCodeForm
                     ->label('Expiry Date')
                     ->nullable()
                     ->after('use_started_at')
+                    ->default(now()->addYear())
                     ->seconds(false)
                     ->native(false)
                     ->helperText('tanggal kode tidak dapat digunakan/diklaim (expired)'),
@@ -147,6 +158,24 @@ class PartnersCodeForm
                     ->default('INACTIVE')
                     ->required()
                     ->native(false),
+
+                FileUpload::make('qrcode_image')
+                    ->label('QR Code Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('partners/QRcode')
+                    ->visibility('public')
+                    ->openable(true)
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '1:1',
+                        '4:3',
+                        '16:9',
+                    ])
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->nullable()
+                    ->helperText('QR code digenerate oleh sistem ketika pembuatan kode unik.'),
             ])
             ->columns(2);
     }

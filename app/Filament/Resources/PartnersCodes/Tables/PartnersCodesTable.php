@@ -12,6 +12,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 
 class PartnersCodesTable
@@ -24,6 +25,7 @@ class PartnersCodesTable
                 TextColumn::make('id')
                     ->label('ID')
                     ->sortable()
+                    ->limit(10)
                     ->searchable(),
 
                 TextColumn::make('partner.name')
@@ -34,20 +36,30 @@ class PartnersCodesTable
                 TextColumn::make('user.name')
                     ->label('Created By')
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
+
+
+                ImageColumn::make('qrcode_image')
+                    ->label('QR Code')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->circular()
+                    ->defaultImageUrl(url('/images/default-avatar.png')),
 
                 TextColumn::make('unique_code')
                     ->label('Unique Code')
                     ->sortable()
                     ->searchable()
-                    // ->copyable()
+                    ->formatStateUsing(fn(string $state): string => strtoupper($state))
+                    ->copyable()
                     ->copyMessage('Code copied!')
                     ->copyMessageDuration(1500),
 
                 TextColumn::make('fee_percentage')
                     ->label('Fee (%)')
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state ? $state . '%' : '-')
+                    ->formatStateUsing(fn($state) => $state ? $state . '%' : '-')
                     ->default('-'),
 
                 TextColumn::make('reduction_percentage')
@@ -58,12 +70,12 @@ class PartnersCodesTable
                 TextColumn::make('claim_quota')
                     ->label('Claim Quota')
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state ?? 'Unlimited'),
+                    ->formatStateUsing(fn($state) => $state ?? 'Unlimited'),
 
                 TextColumn::make('max_claim_per_account')
                     ->label('Max Claim/Account')
                     ->sortable()
-                    ->formatStateUsing(fn ($state) => $state ?? 'Unlimited'),
+                    ->formatStateUsing(fn($state) => $state ?? 'Unlimited'),
 
                 TextColumn::make('use_started_at')
                     ->label('Start Date')
@@ -77,8 +89,9 @@ class PartnersCodesTable
                     ->sortable()
                     ->default('-'),
 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
+                    ->badge()
                     ->colors([
                         'success' => 'ACTIVE',
                         'danger' => 'INACTIVE',
@@ -117,11 +130,11 @@ class PartnersCodesTable
                     ->preload(),
 
                 Filter::make('expired')
-                    ->query(fn (Builder $query): Builder => $query->where('use_expired_at', '<', now()))
+                    ->query(fn(Builder $query): Builder => $query->where('use_expired_at', '<', now()))
                     ->label('Expired Codes'),
 
                 Filter::make('active_period')
-                    ->query(fn (Builder $query): Builder => $query
+                    ->query(fn(Builder $query): Builder => $query
                         ->where('use_started_at', '<=', now())
                         ->where('use_expired_at', '>=', now()))
                     ->label('Active Period'),
@@ -131,9 +144,9 @@ class PartnersCodesTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-            BulkActionGroup::make([
-                DeleteBulkAction::make(),
-            ]),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ])
             ->defaultSort('created_at', 'desc');
     }
