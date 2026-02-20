@@ -21,10 +21,20 @@ class CreatePartnersCode extends CreateRecord
         $res['unique_code'] = strtoupper($res['unique_code']);    //make sure its capital
         $codeToCheckForUnique = $res['unique_code'];
 
+        if(strlen($res['unique_code']) < 3 || strlen($res['unique_code']) > 15){
+            $modalDescAction = "Create atau update KODE PARTNER gagal karena kode harus antara 3 hingga 15 karakter.";
+            Notification::make()
+                ->title($modalDescAction)
+                ->warning()
+                ->duration(5000)
+                ->send();
+            $this->halt();
+        }
+
         $isCodeExist = $this->isCodeUnique($codeToCheckForUnique);
         
         if ($isCodeExist) {
-            $modalDescAction = "Create atau update data gagal karena duplikasi data ({$res['unique_code']}))";
+            $modalDescAction = "Create atau update KODE PARTNER gagal karena duplikasi data ({$res['unique_code']}))";
             Notification::make()
                 ->title($modalDescAction)
                 ->warning()
@@ -33,13 +43,24 @@ class CreatePartnersCode extends CreateRecord
             // 2. Hentikan proses agar tidak lanjut ke database
             $this->halt();
         }
+        
+
+      
 
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // dd($data);
-        return $data;
+        $res = $this->data;
+          //generate qrcode dari services/QrCodeService.php dan save sebagai image di kolom qrcode_image
+        $qrcodeService = new \App\Services\QrCodeService();
+        
+        $qrcodeImage = $qrcodeService->generateAndSave($res['unique_code']);
+        $res['qrcode_image'] = $qrcodeImage; // Simpan path gambar QR code ke database
+
+        $this->data = $res;
+
+        return $this->data;
     }
 
     protected function afterCreate(): void
