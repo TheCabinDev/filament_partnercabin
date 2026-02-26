@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum', 'frontend.secret'], 'prefix' => '
 Route::group(['middleware' => ['coreresv.secret'], 'prefix' => 'v1'], function () {
     Route::post('core-reservation/detail', [V1RESVCodeController::class, 'codeDetail']);
     Route::post('core-reservation/usecode', [V1RESVCodeController::class, 'useCodeAfterFinalStatus']);
+    Route::post('core-reservation/usecode-homepage', [V1RESVCodeController::class, 'useCodeFromHomepage']);
 
 });
 

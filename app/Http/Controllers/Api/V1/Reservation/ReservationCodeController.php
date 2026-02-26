@@ -167,4 +167,11 @@ class ReservationCodeController extends Controller
 
         return response('', 404);
     }
+
+    public function useCodeFromHomepage(Request $request)
+    {
+        $codeToCheck = $request->code;
+        Log::info('CORERESERVATION|USECODEFROMHOMEPAGE|' . $codeToCheck);
+        return response()->noContent();
+    }
 }
