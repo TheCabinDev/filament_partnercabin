@@ -25,7 +25,7 @@ class PartnersCodeResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Kode Unik Partner';
 
-    protected static ?string $recordTitleAttribute = 'Partner/mitra';
+    protected static ?string $recordTitleAttribute = 'unique_code';
 
     protected static ?string $navigationLabel = 'Kode Unik Partner';
     protected static string | UnitEnum | null $navigationGroup = 'Partner/mitra';

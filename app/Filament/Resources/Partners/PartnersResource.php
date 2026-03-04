@@ -27,7 +27,7 @@ class PartnersResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Partner/mitra';
     
-    protected static ?string $recordTitleAttribute = 'Partner/mitra';
+    protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'Partner/mitra';
     protected static string | UnitEnum | null $navigationGroup = 'Partner/mitra';

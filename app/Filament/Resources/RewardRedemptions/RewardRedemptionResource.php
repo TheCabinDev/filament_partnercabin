@@ -25,7 +25,7 @@ class RewardRedemptionResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Penarikan Dana Partner';
 
-    protected static ?string $recordTitleAttribute = 'Penarikan Dana Partner';
+    protected static ?string $recordTitleAttribute = 'id_partner';
 
     protected static ?string $navigationLabel = 'Penarikan Dana Partner';
     protected static string | UnitEnum | null $navigationGroup = 'Dana oleh Partner';

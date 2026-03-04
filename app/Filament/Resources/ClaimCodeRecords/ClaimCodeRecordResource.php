@@ -26,7 +26,7 @@ class ClaimCodeRecordResource extends Resource
     
     protected static ?string $pluralModelLabel = 'Transaksi Penggunaan Kode Unik';
 
-    protected static ?string $recordTitleAttribute = 'Transaksi Penggunaan Kode Unik';
+    protected static ?string $recordTitleAttribute = 'reservation_id';
 
     protected static ?string $navigationLabel = 'Transaksi Penggunaan Kode Unik';
     protected static string | UnitEnum | null $navigationGroup = 'Transaksi Reservasi';

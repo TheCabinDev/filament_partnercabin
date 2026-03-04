@@ -25,7 +25,7 @@ class PoinActivityResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Aktifitas Poin';
 
-    protected static ?string $recordTitleAttribute = 'Aktifitas Poin';
+    protected static ?string $recordTitleAttribute = 'reservation_id';
 
     protected static ?string $navigationLabel = 'Aktifitas Poin';
     protected static string | UnitEnum | null $navigationGroup = 'Dana oleh Partner';

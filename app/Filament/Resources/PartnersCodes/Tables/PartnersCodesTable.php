@@ -22,10 +22,12 @@ class PartnersCodesTable
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                TextColumn::make('id')
+                TextColumn::make('NMID')
                     ->label('ID')
                     ->sortable()
-                    ->limit(10)
+                    ->limit(13)
+                    ->copyable()
+                    ->copyMessage('NMID copied!')
                     ->searchable(),
 
                 TextColumn::make('partner.name')
