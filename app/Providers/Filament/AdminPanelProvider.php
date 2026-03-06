@@ -40,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
 
         $primaryColor = match (app()->environment()) {
             'local' => Color::Purple,
-            'staging' => Color::Yellow,
+            'staging' => Color::Red,
             'production' => Color::Amber,
             default => Color::Amber,
         };
