@@ -152,24 +152,23 @@ class PartnersCodesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     ExportAction::make()->exports([
-                        ExcelExport::make()
-                            ->withFilename(date('Y-m-d') . ' - partnerscodes')
-                            ->withColumns([
-                                // Column::make('id')->heading('NMID'),
-                                Column::make('partner.name')->heading('Partner'),
-                                // Column::make('qrcode_image')->heading('QR Code'),
-                                // Column::make('user.name')->heading('Created By'),
-                                Column::make('unique_code')->heading('Unique Code'),
-                                Column::make('fee_percentage')->heading('Fee (%)'),
-                                Column::make('reduction_percentage')->heading('Reduction (%)'),
-                                Column::make('claim_quota')->heading('Claim Quota'),
-                                Column::make('max_claim_per_account')->heading('Max Claim/Account'),
-                                Column::make('use_started_at')->heading('Start Date'),
-                                Column::make('use_expired_at')->heading('Expired Date'),
-                                Column::make('status')->heading('Status'),
-                                Column::make('created_at')->heading('Created At'),
-                                Column::make('updated_at')->heading('Updated At'),
-                            ]),
+                    ExcelExport::make()
+                        ->fromTable()
+                        ->withFilename(date('Y-m-d') . ' - partnerscodes')
+                        ->withColumns([
+                            Column::make('id')->heading('NMID'),
+                            Column::make('partner.name')->heading('Partner'),
+                            Column::make('unique_code')->heading('Unique Code'),
+                            Column::make('fee_percentage')->heading('Fee (%)'),
+                            Column::make('reduction_percentage')->heading('Reduction (%)'),
+                            Column::make('claim_quota')->heading('Claim Quota'),
+                            Column::make('max_claim_per_account')->heading('Max Claim/Account'),
+                            Column::make('use_started_at')->heading('Start Date'),
+                            Column::make('use_expired_at')->heading('Expired Date'),
+                            Column::make('status')->heading('Status'),
+                            Column::make('created_at')->heading('Created At'),
+                            Column::make('updated_at')->heading('Updated At'),
+                        ]),
                     ])
                 ]),
             ])
