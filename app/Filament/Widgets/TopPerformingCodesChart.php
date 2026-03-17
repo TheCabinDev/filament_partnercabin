@@ -16,6 +16,11 @@ class TopPerformingCodesChart extends ChartWidget
 
     protected static ?int $sort = 6;
 
+    public static function canView(): bool
+    {
+        return false;
+    }
+
     protected function getData(): array
     {
         return [];
