@@ -23,6 +23,10 @@ class ClaimCodeRecord extends Model
         'reservation_total_price',
         'total_poin_earned',
         'reservation_status',
+        'check_in_time',
+        'check_out_time',
+        'rate_for_guest',
+        'rate_profit',
     ];
 
     protected $casts = [
@@ -31,6 +35,10 @@ class ClaimCodeRecord extends Model
         'id_code' => 'string',
         'reservation_total_price' => 'decimal:2',
         'total_poin_earned' => 'decimal:2',
+        'check_in_time' => 'datetime',
+        'check_out_time' => 'datetime',
+        'reservation_total_price' => 'decimal:2',
+        'rate_profit' => 'decimal:2',
     ];
 
 
@@ -50,11 +58,11 @@ class ClaimCodeRecord extends Model
         return $this->belongsTo(Partners::class, 'id_partner');
     }
 
-    public function partnercode (): BelongsTo
+    public function partnercode(): BelongsTo
     {
         return $this->belongsTo(PartnersCode::class, 'id_code');
     }
-    
+
     public function scopeSuccess($query)
     {
         return $query->where('reservation_status', 'SUCCESS');
@@ -83,6 +91,6 @@ class ClaimCodeRecord extends Model
     public function scopeThisMonth($query)
     {
         return $query->whereMonth('created_at', now()->month)
-                     ->whereYear('created_at', now()->year);
+            ->whereYear('created_at', now()->year);
     }
 }

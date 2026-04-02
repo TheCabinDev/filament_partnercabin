@@ -41,6 +41,9 @@ class ReservationCodeController extends Controller
         $date_transaction = $request->date_transaction;
         $reservation_status = $request->reservation_status;
 
+        $in_time = $request->in_time;
+        $out_time = $request->out_time;
+
         //trait to check code
         $res = $this->isCodeValid($codeToCheck);
 
@@ -62,7 +65,13 @@ class ReservationCodeController extends Controller
                         'id_code' => $codeDetail->id,
                         'id_partner' => $codeDetail->id_partner,
                         'total_poin_earned' => $earnedPoinCash,
-                        'reservation_status' => $resStatus
+                        'reservation_status' => $resStatus,
+
+                        //04022026 - Menambahkan kolom check-in, check-out, rate_for_guest, dan rate_profit dengan nilai null untuk reservasi yang expired                        
+                        'check_in_time' => $in_time ? Carbon::parse($in_time) : null,
+                        'check_out_time' => $out_time ? Carbon::parse($out_time) : null,
+                        'rate_for_guest' => $codeDetail->reduction_percentage,
+                        'rate_profit' => $codeDetail->fee_percentage,
                     ]);
 
                     Log::info('CORERESERVATION|USECODE-1|' . json_encode($resClaimCodeCreated));
@@ -129,7 +138,13 @@ class ReservationCodeController extends Controller
                         'id_code' => $codeDetail->id,
                         'id_partner' => $codeDetail->id_partner,
                         'total_poin_earned' => 0, //hitung,
-                        'reservation_status' => 'EXPIRED'
+                        'reservation_status' => 'EXPIRED',
+
+                        //04022026 - Menambahkan kolom check-in, check-out, rate_for_guest, dan rate_profit dengan nilai null untuk reservasi yang expired
+                        'check_in_time' => $in_time ? Carbon::parse($in_time) : null,
+                        'check_out_time' => $out_time ? Carbon::parse($out_time) : null,
+                        'rate_for_guest' => $codeDetail->reduction_percentage,
+                        'rate_profit' => $codeDetail->fee_percentage,
 
                     ]);
                     Log::info('CORERESERVATION|USECODE-FAILED|' . json_encode($resClaimCodeCreated));
