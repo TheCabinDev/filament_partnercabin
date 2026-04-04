@@ -4,7 +4,6 @@ namespace App\Filament\Widgets;
 
 use App\Models\ClaimCodeRecord;
 use App\Models\PartnersCode;
-use App\Models\PoinActivity;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
@@ -18,7 +17,7 @@ class CodeAmountNominalWidget extends TableWidget
 {
     protected int | string | array $columnSpan = 'full';
 
-    protected static ?string $heading = 'Rekap Kode Unik';
+    protected static ?string $heading = 'Leaderboard Performa Kode Partner';
 
     protected static ?int $sort = 7;
 
@@ -34,56 +33,62 @@ class CodeAmountNominalWidget extends TableWidget
 
         $query = PartnersCode::query()
             ->select(['partners_codes.id', 'partners_codes.unique_code'])
+            // 1. Menghitung JUMLAH TRANSAKSI (Leaderboard Count)
             ->selectSub(
-                PoinActivity::query()
-                    ->selectRaw('COALESCE(SUM(amount), 0)')
-                    ->where('type_activity', 'EARN')
-                    ->whereColumn('id_unique_code', 'partners_codes.id')
-                    ->when($startDate, fn (Builder $subQuery) => $subQuery->where('date_transaction', '>=', $startDate))
-                    ->when($endDate, fn (Builder $subQuery) => $subQuery->where('date_transaction', '<=', $endDate)),
-                'amount_total'
+                ClaimCodeRecord::query()
+                    ->selectRaw('COUNT(*)')
+                    ->where('reservation_status', 'SUCCESS')
+                    ->whereColumn('id_code', 'partners_codes.id')
+                    ->when($startDate, fn(Builder $subQuery) => $subQuery->where('check_in_time', '>=', $startDate))
+                    ->when($endDate, fn(Builder $subQuery) => $subQuery->where('check_in_time', '<=', $endDate)),
+                'transaksi_count'
             )
+            // 2. Menghitung NOMINAL TRANSAKSI (Leaderboard Sum)
             ->selectSub(
                 ClaimCodeRecord::query()
                     ->selectRaw('COALESCE(SUM(reservation_total_price), 0)')
                     ->where('reservation_status', 'SUCCESS')
                     ->whereColumn('id_code', 'partners_codes.id')
-                    ->when($startDate, fn (Builder $subQuery) => $subQuery->where('created_at', '>=', $startDate))
-                    ->when($endDate, fn (Builder $subQuery) => $subQuery->where('created_at', '<=', $endDate)),
+                    ->when($startDate, fn(Builder $subQuery) => $subQuery->where('check_in_time', '>=', $startDate))
+                    ->when($endDate, fn(Builder $subQuery) => $subQuery->where('check_in_time', '<=', $endDate)),
                 'nominal_total'
             );
 
         return $table
             ->query($query)
-            ->defaultSort('unique_code')
+            // Default diurutkan berdasarkan jumlah transaksi terbanyak
+            ->defaultSort('transaksi_count', 'desc')
             ->filters([
                 Filter::make('date_range')
-                    ->label('Periode')
+                    ->label('Periode Check-in')
                     ->schema([
                         DatePicker::make('date_in')
-                            ->label('Date In')
-                            ->placeholder('Pilih tanggal awal')
+                            ->label('Dari Tanggal')
                             ->native(false),
                         DatePicker::make('date_out')
-                            ->label('Date Out')
-                            ->placeholder('Pilih tanggal akhir')
+                            ->label('Sampai Tanggal')
                             ->native(false),
                     ])
                     ->columns(2),
             ], layout: FiltersLayout::AboveContentCollapsible)
-            ->filtersFormColumns(2)
             ->columns([
                 TextColumn::make('unique_code')
-                    ->label('Kode Unik')
-                    ->searchable(),
-                TextColumn::make('amount_total')
-                    ->label('Amount')
-                    ->alignEnd()
-                    ->numeric(decimalPlaces: 2, decimalSeparator: ',', thousandsSeparator: '.'),
+                    ->label('Nama Kode Partner')
+                    ->searchable()
+                    ->copyable(),
+
+                TextColumn::make('transaksi_count')
+                    ->label('Banyak Transaksi')
+                    ->alignCenter()
+                    ->sortable()
+                    ->badge()
+                    ->color('primary'),
+
                 TextColumn::make('nominal_total')
-                    ->label('Nominal')
+                    ->label('Sum Nominal')
                     ->alignEnd()
-                    ->money('IDR', divideBy: 1, locale: 'id_ID'),
+                    ->sortable()
+                    ->money('IDR', locale: 'id_ID'),
             ])
             ->paginated([10, 25, 50]);
     }
