@@ -11,21 +11,7 @@ class ClaimCodeRecordInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id'),
-                TextEntry::make('id_partner')
-                    ->numeric(),
-                TextEntry::make('id_code')
-                    ->numeric(),
-                TextEntry::make('reservation_id'),
-                TextEntry::make('reservation_total_price')
-                    ->numeric(),
-                TextEntry::make('total_poin_earned')
-                    ->numeric(),
-                TextEntry::make('reservation_status'),
-                TextEntry::make('created_at')
-                    ->dateTime(),
-                TextEntry::make('updated_at')
-                    ->dateTime(),
+              
             ]);
     }
 }

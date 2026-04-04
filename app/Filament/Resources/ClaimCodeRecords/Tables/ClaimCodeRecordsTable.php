@@ -19,19 +19,24 @@ class ClaimCodeRecordsTable
             ->columns([
                 TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('partner.name')
-                    ->label('Nama Partner'),
                 TextColumn::make('partnercode.unique_code')
                     ->searchable()
-                    ->label('Kode unik'),
+                    ->label('Kode unik')
+                    ->description(fn($record) => $record->partner->name),
                 TextColumn::make('reservation_id')
                     ->searchable(),
                 TextColumn::make('reservation_total_price')
-                    ->label('Total Harga')
+                    ->tooltip('nilai ini digunakan untuk perhitungan komisi. Nilai ini bukan harga yang dibayarkan tamu, tapi harga total reservasi sebelum potongan untuk tamu')
+                    ->label('IDR Total Harga')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('total_poin_earned')
-                    ->label('Dana didapat')
+                    ->tooltip('nilai ini dihitung berdasarkan rate profit % dikalikan dengan IDR Total Harga Reservasi')
+                    ->label('IDR Dana didapat')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('rate_profit')
+                    ->label('Rate Profit %')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('reservation_status')
@@ -42,11 +47,19 @@ class ClaimCodeRecordsTable
                         'danger' => 'EXPIRED',
                     ])
                     ->sortable(),
-
                 TextColumn::make('created_at')
+                    ->label('Tgl Transaksi')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('check_in_time')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('check_out_time')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
