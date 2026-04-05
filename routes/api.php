@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PartnersCodeController;
+use App\Http\Controllers\Api\V1\LeaderBoardController;
 use App\Http\Controllers\Api\V1\ProfileController as V1ProfileController;
 use App\Http\Controllers\Api\V1\PartnerCodesController as V1PartnerCodesController;
 use App\Http\Controllers\Api\V1\WithdrawMoneyController as V1WithdrawMoneyController;
 use App\Http\Controllers\Api\V1\Reservation\ReservationCodeController as V1RESVCodeController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\PushSubscriptionController;
-use App\Http\Controllers\PartnerCodeController;
 
 
 //no need to login
@@ -31,6 +31,9 @@ Route::group(['middleware' => ['auth:sanctum', 'frontend.secret'], 'prefix' => '
     Route::get('money-balance', [V1WithdrawMoneyController::class, 'moneyBalance']);
     Route::post('/withdraw', [V1WithdrawMoneyController::class, 'withdraw']);
     Route::get('withdraw-history', [V1WithdrawMoneyController::class, 'withdrawHistory']);
+
+    //leaderboard API
+    Route::get('leaderboard', [LeaderBoardController::class, 'leaderboard']);
 });
 
 Route::group(['middleware' => ['coreresv.secret'], 'prefix' => 'v1'], function () {
