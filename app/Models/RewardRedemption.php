@@ -15,14 +15,24 @@ class RewardRedemption extends Model
     protected $fillable = [
         'id_partner',
         'type_reward',
-        'poin_to_redeem',
+        'raw_amount_to_redeem',
         'cash_amount',
         'redemption_status',
+        'admin_fee_amount',
+        'settlement_notes',
+        'settlement_proof_image',
+        'pdf_reward_trx',
+        'request_date',
+        'settlement_date',
     ];
 
     protected $casts = [
-        'poin_to_redeem' => 'integer',
+        'raw_amount_to_redeem' => 'integer',
         'cash_amount' => 'decimal:2',
+        'admin_fee_amount' => 'decimal:2',
+        'settlement_notes' => 'string',
+        'settlement_proof_image' => 'string',
+
     ];
 
     /**

@@ -90,7 +90,7 @@ class WithdrawMoneyController extends Controller
         $redemption = RewardRedemption::create([
             'id_partner' => $partnerId,
             'type_reward' => 'CASH',            //cash only for now
-            'poin_to_redeem' =>  intval($request->withdraw_amount),
+            'raw_amount_to_redeem' =>  intval($request->withdraw_amount),
             'cash_amount' =>  intval($request->withdraw_amount),
             'redemption_status' => 'PENDING',
             // 'account_number' => $accountNumber,

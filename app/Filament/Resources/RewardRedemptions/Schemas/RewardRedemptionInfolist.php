@@ -11,10 +11,7 @@ class RewardRedemptionInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('created_at')
-                    ->dateTime(),
-                TextEntry::make('updated_at')
-                    ->dateTime(),
+           
             ]);
     }
 }
