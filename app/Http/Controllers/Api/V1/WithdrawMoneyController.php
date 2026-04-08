@@ -21,7 +21,7 @@ class WithdrawMoneyController extends Controller
 
         // get all withdraw transaction with status of COMPLETED, PENDING, PROCESSING
         $allWithdrawNoRejected = RewardRedemption::where('id_partner', $partnerId)
-            ->whereIn('redemption_status', ['COMPLETED', 'PENDING', 'PROCESSING'])->sum('cash_amount');
+            ->whereIn('redemption_status', ['COMPLETED', 'PENDING', 'PROCESSING'])->sum('raw_amount_to_redeem');
 
         $res = intval($allCash) - intval($allWithdrawNoRejected);
 
