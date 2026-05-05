@@ -28,17 +28,20 @@ class ClaimCodeRecordsTable
                     ->label('Kode unik')
                     ->description(fn($record) => $record->partner->name),
                 TextColumn::make('reservation_id')
-                    ->searchable(),
+                    ->searchable()
+                    ->copyable(),
                 TextColumn::make('reservation_total_price')
                     ->tooltip('nilai ini digunakan untuk perhitungan komisi. Nilai ini bukan harga yang dibayarkan tamu, tapi harga total reservasi sebelum potongan untuk tamu')
                     ->label('IDR Total Harga')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable(),
                 TextColumn::make('total_poin_earned')
                     ->tooltip('nilai ini dihitung berdasarkan rate profit % dikalikan dengan IDR Total Harga Reservasi')
                     ->label('IDR Dana didapat')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable(),
                 TextColumn::make('rate_profit')
                     ->label('Rate Profit %')
                     ->numeric()
