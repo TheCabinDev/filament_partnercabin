@@ -13,6 +13,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class ClaimCodeRecordsTable
 {
@@ -20,6 +23,8 @@ class ClaimCodeRecordsTable
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->heading('Cara penggunaan filter untuk sorting reservasi yang sukses berdasar bulan check in')
+            ->description('Filter status (sukses), filter Ci tgl pilih bulan tertentu, filter Trx dipilih 1 tahun')
             ->columns([
                 TextColumn::make('id')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -168,7 +173,28 @@ class ClaimCodeRecordsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ExportAction::make()->exports([
+                        ExcelExport::make()
+                            ->fromTable()
+                            ->withFilename(date('Y-m-d') . '-record_keuntungan')
+                            ->withColumns([
+                                Column::make('id'),
+                                Column::make('partner.name')->heading('Partner'),
+                                Column::make('partnercode.unique_code')->heading('Unique Code'),
+                                Column::make('reservation_id')->heading('Id Reservasi'),
+                                Column::make('check_in_time')->heading('check in '),
+                                Column::make('check_out_time')->heading('check out'),
+                                Column::make('reservation_total_price')->heading('Nominal dibayar tamu'),
+                                Column::make('total_poin_earned')->heading('keuntungan IDR'),
+                                Column::make('rate_profit')->heading('keuntungan %'),
+                                Column::make('reservation_status')->heading('Status'),
+                                Column::make('created_at')->heading('Created At'),
+                                Column::make('updated_at')->heading('Updated At'),
+                            ]),
+                    ])
                 ]),
-            ]);
+            ])
+            ->striped()
+            ->paginated([10, 25, 50, 100]);
     }
 }
