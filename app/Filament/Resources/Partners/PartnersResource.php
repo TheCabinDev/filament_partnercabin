@@ -16,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use App\Filament\Resources\Partners\RelationManagers\PartnerCodesRelationManager;
+use App\Filament\Resources\Partners\Widgets\PartnerStatsOverview;
 use UnitEnum;
 
 class PartnersResource extends Resource
@@ -63,6 +64,13 @@ class PartnersResource extends Resource
             'create' => CreatePartners::route('/create'),
             'view' => ViewPartners::route('/{record}'),
             'edit' => EditPartners::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            PartnerStatsOverview::class,
         ];
     }
 }
