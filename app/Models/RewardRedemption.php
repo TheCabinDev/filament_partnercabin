@@ -14,6 +14,7 @@ class RewardRedemption extends Model
 
     protected $fillable = [
         'id_partner',
+        'id_unique_code',
         'type_reward',
         'raw_amount_to_redeem',
         'cash_amount',
@@ -27,6 +28,7 @@ class RewardRedemption extends Model
     ];
 
     protected $casts = [
+        'id_unique_code' => 'string',
         'raw_amount_to_redeem' => 'integer',
         'cash_amount' => 'decimal:2',
         'admin_fee_amount' => 'decimal:2',
@@ -41,5 +43,10 @@ class RewardRedemption extends Model
     public function partner(): BelongsTo
     {
         return $this->belongsTo(Partners::class, 'id_partner');
+    }
+
+    public function partnerCode(): BelongsTo
+    {
+        return $this->belongsTo(PartnersCode::class, 'id_unique_code');
     }
 }
