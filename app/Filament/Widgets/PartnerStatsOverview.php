@@ -31,6 +31,10 @@ class PartnerStatsOverview extends BaseWidget
             ->where('redemption_status', 'COMPLETED')
             ->sum('cash_amount');
 
+        $totalAdminFee = RewardRedemption::where('id_partner', $this->record->id)
+            ->where('redemption_status', 'COMPLETED')
+            ->sum('admin_fee_amount');
+
         $sisaSaldo = $totalKeuntungan - $totalPenarikan;
 
         return [
@@ -44,10 +48,10 @@ class PartnerStatsOverview extends BaseWidget
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('warning'),
 
-            // Stat::make('Sisa Saldo', 'Rp ' . number_format($sisaSaldo, 0, ',', '.'))
-            //     ->description($sisaSaldo < 0 ? '⚠️ Saldo minus' : 'Saldo tersedia untuk ditarik')
-            //     ->icon('heroicon-o-banknotes')
-            //     ->color($sisaSaldo < 0 ? 'danger' : 'info'),
+            stat::make('Total Biaya Admin', 'Rp' . number_format($totalAdminFee, 0, ',', '.'))
+                ->description('Total biaya admin dari penarikan')
+                ->icon('heroicon-o-currency-dollar')
+                ->color('danger'),
         ];
     }
 }
