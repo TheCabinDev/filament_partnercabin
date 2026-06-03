@@ -6,6 +6,7 @@ use App\Filament\Resources\PartnersCodes\Pages\CreatePartnersCode;
 use App\Filament\Resources\PartnersCodes\Pages\EditPartnersCode;
 use App\Filament\Resources\PartnersCodes\Pages\ListPartnersCodes;
 use App\Filament\Resources\PartnersCodes\Pages\ViewPartnersCode;
+use App\Filament\Resources\PartnersCodes\RelationManagers\RewardRedemptionsRelationManager;
 use App\Filament\Resources\PartnersCodes\Schemas\PartnersCodeForm;
 use App\Filament\Resources\PartnersCodes\Schemas\PartnersCodeInfolist;
 use App\Filament\Resources\PartnersCodes\Tables\PartnersCodesTable;
@@ -48,7 +49,7 @@ class PartnersCodeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RewardRedemptionsRelationManager::class,
         ];
     }
 

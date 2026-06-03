@@ -6,6 +6,7 @@ use App\Filament\Resources\Partners\Pages\CreatePartners;
 use App\Filament\Resources\Partners\Pages\EditPartners;
 use App\Filament\Resources\Partners\Pages\ListPartners;
 use App\Filament\Resources\Partners\Pages\ViewPartners;
+use App\Filament\Resources\Partners\RelationManagers\RewardRedemptionsRelationManager;
 use App\Filament\Resources\Partners\Schemas\PartnersForm;
 use App\Filament\Resources\Partners\Schemas\PartnersInfolist;
 use App\Filament\Resources\Partners\Tables\PartnersTable;
@@ -15,6 +16,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use App\Filament\Resources\Partners\RelationManagers\PartnerCodesRelationManager;
+use App\Filament\Resources\Partners\Widgets\PartnerStatsOverview;
 use UnitEnum;
 
 class PartnersResource extends Resource
@@ -26,7 +28,7 @@ class PartnersResource extends Resource
     protected static ?string $modelLabel = 'Partner/Mitra';
 
     protected static ?string $pluralModelLabel = 'Partner/mitra';
-    
+
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'Partner/mitra';
@@ -51,6 +53,7 @@ class PartnersResource extends Resource
     {
         return [
             PartnerCodesRelationManager::class,
+            RewardRedemptionsRelationManager::class,
         ];
     }
 
@@ -61,6 +64,13 @@ class PartnersResource extends Resource
             'create' => CreatePartners::route('/create'),
             'view' => ViewPartners::route('/{record}'),
             'edit' => EditPartners::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            PartnerStatsOverview::class,
         ];
     }
 }
