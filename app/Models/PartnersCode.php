@@ -85,4 +85,9 @@ class PartnersCode extends Model
     }
     // partner_code has many poin_activity
     // partner code  has many poin ledger
+
+    public function rewardRedemptions(): HasMany
+    {
+        return $this->hasMany(RewardRedemption::class, 'id_unique_code');
+    }
 }

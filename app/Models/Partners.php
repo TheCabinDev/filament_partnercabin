@@ -78,6 +78,11 @@ class Partners extends Authenticatable
         return $this->hasMany(RewardRedemption::class, 'id_partner');
     }
 
+    public function rewardRedemptions(): HasMany
+    {
+        return $this->hasMany(RewardRedemption::class, 'id_partner');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 'ACTIVE');
