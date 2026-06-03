@@ -93,6 +93,7 @@ class WithdrawMoneyController extends Controller
             'raw_amount_to_redeem' =>  intval($request->withdraw_amount),
             'cash_amount' =>  intval($request->withdraw_amount),
             'redemption_status' => 'PENDING',
+            'id_unique_code' => $partner->partnerCode->id ?? null,
             // 'account_number' => $accountNumber,
         ]);
 

@@ -6,6 +6,7 @@ use App\Filament\Resources\Partners\Pages\CreatePartners;
 use App\Filament\Resources\Partners\Pages\EditPartners;
 use App\Filament\Resources\Partners\Pages\ListPartners;
 use App\Filament\Resources\Partners\Pages\ViewPartners;
+use App\Filament\Resources\Partners\RelationManagers\RewardRedemptionsRelationManager;
 use App\Filament\Resources\Partners\Schemas\PartnersForm;
 use App\Filament\Resources\Partners\Schemas\PartnersInfolist;
 use App\Filament\Resources\Partners\Tables\PartnersTable;
@@ -26,7 +27,7 @@ class PartnersResource extends Resource
     protected static ?string $modelLabel = 'Partner/Mitra';
 
     protected static ?string $pluralModelLabel = 'Partner/mitra';
-    
+
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'Partner/mitra';
@@ -51,6 +52,7 @@ class PartnersResource extends Resource
     {
         return [
             PartnerCodesRelationManager::class,
+            RewardRedemptionsRelationManager::class,
         ];
     }
 
