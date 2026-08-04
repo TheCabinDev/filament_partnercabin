@@ -22,9 +22,12 @@ class ClaimsOverTimeChart extends ChartWidget
             DB::raw('COUNT(*) as count')
         )
         ->where('created_at', '>=', now()->subDays(6))
+        ->where('reservation_status', 'SUCCESS')
         ->groupBy('date')
         ->orderBy('date')
         ->get();
+
+        // dd($data->toArray());
 
         $labels = [];
         $counts = [];
