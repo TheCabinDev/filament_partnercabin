@@ -13,6 +13,9 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Actions\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 
 class RewardRedemptionsTable
 {
@@ -135,6 +138,22 @@ class RewardRedemptionsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    ExportAction::make()->exports([
+                        ExcelExport::make()
+                            ->fromTable()
+                            ->withFilename(date('Y-m-d') . '-reward-redemptions')
+                            ->withColumns([
+                                Column::make('Partner.name')->heading('Partner'),
+                                Column::make('raw_amount_to_redeem')->heading('Nominal Mentah'),
+                                Column::make('cash_amount')->heading('Nominal Pencarian Dana'),
+                                Column::make('admin_fee_amount')->heading('Nominal Fee Admin'),
+                                Column::make('partner.destination_bank')->heading('Bank Tujuan'),
+                                Column::make('redemption_status')->heading('Status Withdraw'),
+                                Column::make('request_date')->heading('Tanggal Penarikan'),
+                                Column::make('settlement_date')->heading('Tanggal Settlement'),
+                                Column::make('created_at')->heading('Created At'),
+                            ]),
+                    ]),
                 ]),
             ]);
     }
