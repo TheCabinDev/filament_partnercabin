@@ -44,10 +44,17 @@ class ReservationCodeController extends Controller
         $in_time = $request->in_time;
         $out_time = $request->out_time;
 
-        //trait to check code
-        $res = $this->isCodeValid($codeToCheck);
 
         if ($res->getStatusCode() === 200) {
+
+            $exitingRecord = ClaimCodeRecord::where('reservation_id', $reservation_id)->first();
+
+            if ($exitingRecord) {
+                Log::info('CORERESERVATION|USECODE-DUPLICATE|reservation_id already processed: ' . $reservation_id);
+                return response()->json([
+                    'message' => 'success'
+                ], 200);
+            }
             $codeDetail = PartnersCode::where('unique_code', $codeToCheck)
                 ->first();
             try {
@@ -67,7 +74,7 @@ class ReservationCodeController extends Controller
                         'total_poin_earned' => $earnedPoinCash,
                         'reservation_status' => $resStatus,
 
-                        //04022026 - Menambahkan kolom check-in, check-out, rate_for_guest, dan rate_profit dengan nilai null untuk reservasi yang expired                        
+                        //04022026 - Menambahkan kolom check-in, check-out, rate_for_guest, dan rate_profit dengan nilai null untuk reservasi yang expired
                         'check_in_time' => $in_time ? Carbon::parse($in_time) : null,
                         'check_out_time' => $out_time ? Carbon::parse($out_time) : null,
                         'rate_for_guest' => $codeDetail->reduction_percentage,
