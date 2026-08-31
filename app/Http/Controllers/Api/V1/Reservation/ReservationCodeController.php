@@ -44,6 +44,7 @@ class ReservationCodeController extends Controller
         $in_time = $request->in_time;
         $out_time = $request->out_time;
 
+        $res = $this->isCodeValid($codeToCheck);
 
         if ($res->getStatusCode() === 200) {
 
